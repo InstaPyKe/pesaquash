@@ -6,14 +6,13 @@ body, h1, h2, h3, h4, h5, h6 {
     font-family: 'Onest', 'Plus Jakarta Sans', sans-serif !important;
 }
 
-/* Base Body Style - Deep Blue Gradient */
+/* Base Body Style - Clean White */
 body {
-    background: linear-gradient(135deg, #09152C 0%, #12284C 100%) !important;
-    background-attachment: fixed !important;
-    color: #e2e8f0 !important;
+    background-color: #ffffff !important;
+    color: #0f2032 !important;
 }
 
-/* Frosty Glassy White Cards & Panels */
+/* Clean White Card Sections with Blue Borders */
 .glass-card, 
 .bg-white, 
 .bg-slate-50, 
@@ -22,38 +21,38 @@ body {
 .bg-blue-50\/80,
 .bg-purple-50\/60,
 .bg-purple-50\/80 {
-    background-color: rgba(255, 255, 255, 0.07) !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
+    background-color: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1.5px solid rgba(37, 99, 235, 0.15) !important;
+    color: #0f2032 !important;
     border-radius: 24px !important;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.04) !important;
 }
 
 /* Nested row containers (e.g. inside tables or list items) */
 .nested-row-container,
 .bg-slate-100 {
-    background-color: rgba(255, 255, 255, 0.04) !important;
-    border-color: rgba(255, 255, 255, 0.08) !important;
+    background-color: rgba(37, 99, 235, 0.03) !important;
+    border-color: rgba(37, 99, 235, 0.08) !important;
 }
 
 /* Form Inputs, Select boxes, and textareas */
 input, select, textarea, .bg-white input {
-    background-color: rgba(9, 21, 44, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1.5px solid rgba(37, 99, 235, 0.2) !important;
+    color: #0f2032 !important;
     border-radius: 16px !important;
     outline: none !important;
     transition: all 0.2s ease-in-out !important;
 }
 
 input:focus, select:focus, textarea:focus {
-    border-color: #869cff !important;
-    box-shadow: 0 0 0 2px rgba(134, 156, 255, 0.25) !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15) !important;
 }
 
-/* Custom Vista Blue Buttons */
+/* Royal Blue Buttons */
 .reco-btn-primary,
 button.bg-blue-600,
 a.bg-blue-600,
@@ -63,8 +62,8 @@ button.bg-emerald-600,
 a.bg-emerald-600,
 button.bg-purple-600,
 a.bg-purple-600 {
-    background-color: #869cff !important;
-    color: #09152c !important;
+    background-color: #2563eb !important;
+    color: #ffffff !important;
     font-weight: 800 !important;
     font-size: 13px !important;
     text-transform: uppercase !important;
@@ -72,7 +71,7 @@ a.bg-purple-600 {
     border-radius: 16px !important;
     border: none !important;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 4px 14px 0 rgba(134, 156, 255, 0.3) !important;
+    box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.2) !important;
 }
 
 .reco-btn-primary:hover,
@@ -84,9 +83,9 @@ button.bg-emerald-600:hover,
 a.bg-emerald-600:hover,
 button.bg-purple-600:hover,
 a.bg-purple-600:hover {
-    background-color: #9cb1ff !important;
+    background-color: #1d4ed8 !important;
     transform: translateY(-1.5px) !important;
-    box-shadow: 0 6px 20px 0 rgba(134, 156, 255, 0.4) !important;
+    box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.3) !important;
 }
 
 .reco-btn-secondary,
@@ -94,9 +93,9 @@ a.border-blue-200,
 button.border-blue-200,
 a.border-slate-200,
 button.border-slate-200 {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: #ffffff !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+    background-color: transparent !important;
+    color: #2563eb !important;
+    border: 1.5px solid rgba(37, 99, 235, 0.4) !important;
     font-weight: 700 !important;
     font-size: 13px !important;
     text-transform: uppercase !important;
@@ -110,8 +109,8 @@ a.border-blue-200:hover,
 button.border-blue-200:hover,
 a.border-slate-200:hover,
 button.border-slate-200:hover {
-    background-color: rgba(255, 255, 255, 0.12) !important;
-    border-color: #ffffff !important;
+    background-color: rgba(37, 99, 235, 0.05) !important;
+    border-color: #2563eb !important;
     transform: translateY(-1.5px) !important;
 }
 
@@ -119,9 +118,9 @@ button.border-slate-200:hover {
 .reco-btn-danger,
 button.text-rose-600,
 a.text-rose-600 {
-    background-color: rgba(229, 83, 129, 0.15) !important;
-    color: #e55381 !important;
-    border: 1px solid rgba(229, 83, 129, 0.4) !important;
+    background-color: rgba(220, 38, 38, 0.08) !important;
+    color: #dc2626 !important;
+    border: 1px solid rgba(220, 38, 38, 0.3) !important;
     font-weight: 700 !important;
     font-size: 13px !important;
     text-transform: uppercase !important;
@@ -132,96 +131,94 @@ a.text-rose-600 {
 .reco-btn-danger:hover,
 button.text-rose-600:hover,
 a.text-rose-600:hover {
-    background-color: rgba(229, 83, 129, 0.25) !important;
-    border-color: #e55381 !important;
+    background-color: #dc2626 !important;
     color: #ffffff !important;
 }
 
-/* Text overrides to support dark mode Reco theme */
+/* High Contrast Blue Font Color Overrides */
 .text-slate-900, .text-slate-800, .text-slate-850, h1, h2, h3, h4, h5, h6 {
-    color: #ffffff !important;
+    color: #0f2032 !important;
 }
 
 .text-slate-500, .text-slate-550, .text-slate-650, p {
-    color: #e2e8f0 !important;
+    color: #1e3a8a !important;
     opacity: 0.85;
 }
 
 .text-slate-400 {
-    color: #a5b4fc !important; /* Soft indigo for small details */
+    color: #2563eb !important;
     opacity: 0.8;
 }
 
 .text-blue-600, .text-indigo-600, .text-purple-650 {
-    color: #869cff !important; /* Vista blue */
+    color: #2563eb !important;
 }
 
-/* Headers and Navigation Footers */
+/* Headers and Navigation Footers - White and Blue */
 header {
-    background-color: rgba(9, 21, 44, 0.8) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background-color: #ffffff !important;
+    border-bottom: 1.5px solid rgba(37, 99, 235, 0.15) !important;
 }
 
 header span, header a, header svg {
-    color: #ffffff !important;
+    color: #0f2032 !important;
 }
 
 footer {
-    background-color: rgba(9, 21, 44, 0.5) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-    color: rgba(226, 232, 240, 0.5) !important;
+    background-color: #ffffff !important;
+    border-top: 1.5px solid rgba(37, 99, 235, 0.1) !important;
+    color: #1e3a8a !important;
+    opacity: 0.7;
 }
 
 /* Tables and logs */
 table {
-    color: #e2e8f0 !important;
+    color: #1e3a8a !important;
 }
 
 thead tr, thead th {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
-    color: #869cff !important;
+    background-color: rgba(37, 99, 235, 0.05) !important;
+    border-bottom: 1.5px solid rgba(37, 99, 235, 0.15) !important;
+    color: #2563eb !important;
 }
 
 tbody tr {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.08) !important;
 }
 
 tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.03) !important;
+    background-color: rgba(37, 99, 235, 0.02) !important;
 }
 
 /* Progress bar customization */
 #daily-progress-bar,
 .bg-indigo-500,
 .bg-blue-600 {
-    background-color: #869cff !important; /* Vista Blue */
+    background-color: #2563eb !important;
 }
 
 .bg-slate-200 {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(37, 99, 235, 0.1) !important;
 }
 
 /* SVGs and specific UI components */
 svg text {
-    fill: #e2e8f0 !important;
+    fill: #1e3a8a !important;
 }
 
 svg line {
-    stroke: rgba(255, 255, 255, 0.1) !important;
+    stroke: rgba(37, 99, 235, 0.1) !important;
 }
 
 svg path[fill="none"] {
-    stroke: #869cff !important; /* Chart lines to Vista Blue */
+    stroke: #2563eb !important;
 }
 
 svg path[fill*="rgba(37,99,235"] {
-    fill: rgba(134, 156, 255, 0.08) !important; /* Glow under line */
+    fill: rgba(37, 99, 235, 0.05) !important;
 }
 
 svg circle {
-    fill: #869cff !important;
-    stroke: #09152c !important;
+    fill: #2563eb !important;
+    stroke: #ffffff !important;
 }
