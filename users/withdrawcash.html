@@ -151,25 +151,14 @@
             <!-- Form -->
             <form id="extraction-form" onsubmit="processExtractionSequence(event)" class="space-y-4">
 
-                <!-- Provider Selection Dropdown (M-Pesa Only) -->
+                <!-- Provider Selection Dropdown -->
                 <div>
                     <label
-                        class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1.5">Mobile Wallet Provider</label>
-                    <div class="w-full bg-white border border-slate-200/80 p-4 rounded-xl flex items-center justify-between shadow-xs">
-                        <div class="flex items-center space-x-3">
-                            <!-- Premium Custom M-Pesa Style Logo in SVG -->
-                            <div class="h-10 w-10 rounded-lg bg-emerald-500 flex items-center justify-center font-black text-white text-xs tracking-tighter shrink-0 shadow-sm border border-emerald-600/10">
-                                <span class="bg-red-600 px-1 rounded text-[9px] uppercase tracking-tighter mr-0.5">M</span>
-                                <span class="text-white text-xs font-mono font-black">PESA</span>
-                            </div>
-                            <div>
-                                <span class="font-bold text-slate-800 text-xs block">Safaricom M-Pesa</span>
-                                <span class="text-[9px] text-slate-450 font-mono block">Instant Payout Channel</span>
-                            </div>
-                        </div>
-                        <span class="text-[9px] bg-emerald-100 text-emerald-800 border border-emerald-250/60 font-bold px-2 py-1 rounded-lg font-mono uppercase tracking-wider">Active Channel</span>
-                    </div>
-                    <input type="hidden" name="wallet_provider" value="mpesa">
+                        class="block text-[10px] font-mono font-bold tracking-wider text-slate-550 uppercase mb-1.5">Mobile money provider</label>
+                    <select id="wallet-provider" name="wallet_provider" required
+                        class="w-full bg-white border border-slate-200 text-xs font-mono text-slate-750 px-3.5 py-3 rounded-xl focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 font-semibold cursor-pointer">
+                        <option value="mpesa" selected>M-Pesa</option>
+                    </select>
                 </div>
 
                 <!-- Input Amount -->
