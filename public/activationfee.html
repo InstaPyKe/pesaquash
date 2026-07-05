@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Activation Required | PESAQUASH</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+    </style>
+    <!-- Custom Alerts Library -->
+    <script src="js/system-alerts.js"></script>
+</head>
+
+<body
+    class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen flex flex-col justify-center relative overflow-x-hidden selection:bg-emerald-500/20 selection:text-emerald-800">
+
+    <!-- Ambient background glow paths -->
+    <div
+        class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-100/40 rounded-full blur-[120px] pointer-events-none z-0">
+    </div>
+    <div
+        class="absolute bottom-1/4 left-1/3 w-80 h-80 bg-rose-100/30 rounded-full blur-[100px] pointer-events-none z-0">
+    </div>
+
+    <div class="sm:mx-auto sm:w-full sm:max-w-md px-4 z-10 my-8">
+
+        <!-- Main Security Alert Header -->
+        <div class="text-center mb-8">
+            <span
+                class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-widest bg-rose-50 border border-rose-200 text-rose-600 mb-4 animate-pulse">
+                🔒 Activation Required
+            </span>
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900">
+                Activate Your Account
+            </h2>
+            <p class="mt-2 text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+                Your account is currently inactive. Please pay the one-time fee to unlock all daily tasks and invite rewards.
+            </p>
+        </div>
+
+        <!-- Master Activation Interface Card -->
+        <div
+            class="glass-card bg-blue-50/50 rounded-2xl shadow-xl shadow-slate-100/50 overflow-hidden border border-blue-200/60">
+
+            <!-- Method 1: Instant M-Pesa STK Push Terminal -->
+            <div class="p-6 sm:p-8 border-b border-blue-200/60 bg-white/70">
+                <div class="flex items-center space-x-3 mb-4">
+                    <svg class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <div>
+                        <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-blue-600">Method 01 - Automated</h3>
+                        <p class="text-sm font-bold text-slate-900">Instant M-Pesa Prompt</p>
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-650 leading-relaxed mb-5 font-semibold">
+                    Make sure your phone is nearby and unlocked. Clicking the button below will send a payment request directly to your phone screen. Just enter your M-Pesa PIN to complete it.
+                </p>
+
+                <form action="#" method="POST" onsubmit="triggerStkPush(event)">
+                    <div class="mb-4">
+                        <label for="phone"
+                            class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">M-Pesa Phone Number</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                                <span class="text-xs font-mono font-bold text-slate-400">+254</span>
+                            </div>
+                            <input id="phone" name="phone" type="tel" required pattern="^(07|01)\d{8}$"
+                                value="0712345678"
+                                class="w-full pl-14 pr-3.5 py-2.5 text-xs font-mono font-bold rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-blue-500 transition-all text-slate-800">
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-widest py-3.5 px-4 rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer text-center">
+                        Request Payment Prompt (KES 500)
+                    </button>
+                </form>
+            </div>
+
+            <!-- Method 2: Manual Paybill / Buy Goods System Fallback -->
+            <div class="p-6 sm:p-8 bg-white/40">
+                <div class="flex items-center space-x-3 mb-4">
+                    <svg class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    <div>
+                        <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-purple-650">Method 02 - Manual</h3>
+                        <p class="text-sm font-bold text-slate-900">Pay Manually via Till Number</p>
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-650 leading-relaxed mb-4 font-semibold">
+                    If the automatic payment prompt does not show on your phone, you can pay manually using your M-Pesa menu:
+                </p>
+
+                <!-- Financial Target Parameters Display Menu -->
+                <div class="bg-purple-50 p-4 rounded-xl border border-purple-200/60 font-mono space-y-2 mb-5 text-slate-800">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-purple-600 uppercase tracking-wider text-[9px] font-bold">Select Option</span>
+                        <span class="font-bold">Lipa na M-Pesa -> Buy Goods</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-purple-600 uppercase tracking-wider text-[9px] font-bold">Till Number</span>
+                        <span
+                            class="font-black text-slate-900 tracking-wide text-sm bg-white px-2 py-0.5 rounded border border-purple-200/60">5432109</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-purple-600 uppercase tracking-wider text-[9px] font-bold">Exact Amount</span>
+                        <span class="font-black text-blue-600">KES 500.00</span>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a href="signin.html"
+                        class="text-[11px] font-bold text-slate-400 hover:text-blue-600 font-mono uppercase tracking-wider transition-colors">
+                        ← Back to Login
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        async function triggerStkPush(event) {
+            event.preventDefault();
+            const phoneVal = document.getElementById('phone').value;
+
+            const loggedInUserStr = localStorage.getItem("logged_in_user");
+            if (!loggedInUserStr) {
+                alert("Please sign in first.");
+                window.location.href = "signin.html";
+                return;
+            }
+
+            const currentUser = JSON.parse(loggedInUserStr);
+
+            alert(`Starting payment process. A simulated payment request has been sent to +254${phoneVal.substring(1)}. Please authorize.`);
+
+            try {
+                const response = await fetch('/api/auth/activate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: currentUser.id,
+                        phone: phoneVal
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert(`Activation successful! MPESA Transaction Code: ${data.transactionCode}`);
+                    
+                    // Update user activation status in localStorage
+                    currentUser.isActive = true;
+                    localStorage.setItem('logged_in_user', JSON.stringify(currentUser));
+                    
+                    window.location.href = "../users/userdashboard.html";
+                } else {
+                    alert(data.message || data.error || "Activation failed.");
+                }
+            } catch (error) {
+                console.error("Activation error:", error);
+                alert("Network error triggering activation. Please check if server is running.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PESAQUASH | Earn Daily Rewards & Invites</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Modern light-themed glassmorphism elements */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+
+    </style>
+</head>
+
+<body
+    class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased overflow-x-hidden selection:bg-emerald-500/20 selection:text-emerald-800">
+
+
+
+    <!-- 2. Sticky Glassmorphic Navbar -->
+    <nav class="sticky top-0 w-full glass-nav z-40 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2.5">
+                <div class="h-8 w-8 bg-blue-600 flex items-center justify-center rounded-lg text-white font-black text-sm tracking-tight shadow-md shadow-blue-500/20">
+                    P
+                </div>
+                <span class="text-lg font-black tracking-wider text-slate-900 font-mono uppercase">PESAQUASH</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#how-it-works"
+                    class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition">How It Works</a>
+                <a href="#commissions"
+                    class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition">Commissions</a>
+                <a href="signin.html"
+                    class="text-xs font-bold uppercase tracking-wider px-4.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm border border-transparent">Sign In</a>
+            </div>
+
+            <!-- Hamburger Menu Button -->
+            <div class="flex items-center md:hidden">
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                    <svg id="hamburger-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg id="close-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md px-4 py-4 space-y-3 shadow-lg">
+            <a href="#how-it-works" onclick="toggleMobileMenu()"
+                class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2.5 px-3 rounded-xl hover:bg-slate-55 transition">How It Works</a>
+            <a href="#commissions" onclick="toggleMobileMenu()"
+                class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2.5 px-3 rounded-xl hover:bg-slate-55 transition">Commissions</a>
+            <a href="signin.html"
+                class="block text-center text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm border border-transparent">Sign In</a>
+        </div>
+    </nav>
+
+    <!-- 3. Hero Section -->
+    <main class="relative pt-16 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div
+            class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-200/30 rounded-full blur-[100px] pointer-events-none">
+        </div>
+        <div
+            class="absolute top-1/3 left-1/3 w-64 h-64 bg-blue-100/20 rounded-full blur-[80px] pointer-events-none">
+        </div>
+
+        <div class="grid md:grid-cols-12 gap-12 items-center relative z-10">
+            <!-- Left Text Column -->
+            <div class="md:col-span-7 text-center md:text-left space-y-6">
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-slate-900">
+                    Turn Your Screen Time Into <br class="hidden sm:inline">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-500">
+                        Real Daily Cash
+                    </span>
+                </h1>
+
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed font-semibold">
+                    Pay a one-time activation fee of <b class="text-blue-600 font-semibold">KES 500</b> to unlock simple daily tasks and earn passive commissions by inviting friends. Start earning straight to M-Pesa immediately.
+                </p>
+
+                <div class="pt-4 flex flex-col sm:flex-row justify-center md:justify-start items-center gap-4 max-w-md">
+                    <a href="signup.html"
+                        class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm uppercase tracking-wider py-4 px-8 rounded-xl shadow-md hover:shadow-lg transition-all text-center transform active:scale-[0.98]">
+                        Get Started Now
+                    </a>
+                    <a href="#how-it-works"
+                        class="w-full sm:w-auto text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-slate-800 transition py-4 px-6 border border-[#E2E8F0] bg-white rounded-xl shadow-xs text-center">
+                        How It Works ↓
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Mockup Column (Premium CSS-based Platform Dashboard Preview) -->
+            <div class="md:col-span-5 flex justify-center relative w-full max-w-sm mx-auto group">
+                <div class="absolute -inset-1.5 bg-gradient-to-r from-blue-600 to-purple-650 rounded-3xl blur opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+                <div class="relative w-full bg-[#F8FAFC] border border-slate-200/80 rounded-3xl shadow-2xl overflow-hidden font-sans select-none transform hover:scale-[1.02] transition-all duration-300">
+                    <!-- Preview Header -->
+                    <div class="bg-white border-b border-slate-100 px-4 py-3 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="h-6 w-6 bg-blue-600 flex items-center justify-center rounded text-white font-black text-xs shadow-xs">P</div>
+                            <span class="text-xs font-black tracking-wider text-slate-800 font-mono">PESAQUASH</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                            <span class="text-[9px] font-bold text-slate-400 font-mono uppercase">Live Server</span>
+                        </div>
+                    </div>
+
+                    <!-- Welcome Banner -->
+                    <div class="bg-slate-100 p-4 border-b border-slate-150">
+                        <h4 class="text-xs font-black text-slate-800">Welcome Back, Partner!</h4>
+                        <p class="text-[9px] text-slate-500 font-semibold font-mono mt-0.5">Account ID: PQ-94821-KE</p>
+                    </div>
+
+                    <!-- Stats Cards Grid -->
+                    <div class="p-4 grid grid-cols-2 gap-3">
+                        <div class="bg-blue-50/50 border border-blue-100 rounded-xl p-3">
+                            <span class="text-[8px] font-mono font-bold text-blue-600 uppercase">Wallet Balance</span>
+                            <div class="text-xs font-black text-slate-800 mt-0.5">KES 12,450.00</div>
+                        </div>
+                        <div class="bg-purple-50/50 border border-purple-100 rounded-xl p-3">
+                            <span class="text-[8px] font-mono font-bold text-purple-600 uppercase">Referrals</span>
+                            <div class="text-xs font-black text-slate-800 mt-0.5">48 Active</div>
+                        </div>
+                    </div>
+
+                    <!-- Mini Activity Log -->
+                    <div class="px-4 pb-4">
+                        <span class="text-[9px] font-mono font-bold text-slate-400 uppercase tracking-wider block mb-2">Recent Activities</span>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between bg-white border border-slate-100 p-2 rounded-lg">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-[10px]">📲</span>
+                                    <span class="text-[9px] text-slate-700 font-bold">M-Pesa Payout</span>
+                                </div>
+                                <span class="text-[9px] font-bold text-red-500 font-mono">-KES 1,200.00</span>
+                            </div>
+                            <div class="flex items-center justify-between bg-white border border-slate-100 p-2 rounded-lg">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-[10px]">🎡</span>
+                                    <span class="text-[9px] text-slate-700 font-bold">Lucky Spin Reward</span>
+                                </div>
+                                <span class="text-[9px] font-bold text-emerald-600 font-mono">+KES 25.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="px-4 pb-4">
+                        <div class="w-full bg-blue-600 text-center py-2.5 rounded-xl text-white font-bold text-[10px] uppercase tracking-wider shadow-sm hover:bg-blue-750 transition-colors">
+                            Withdraw Cash
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 4. How It Works Section -->
+    <section id="how-it-works" class="border-y border-[#E2E8F0] bg-white/50 py-24 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center max-w-xl mx-auto mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">Earning Program</h2>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">The Easiest Way to Earn Online</h3>
+                <p class="text-sm text-slate-500 mt-2">Why companies pay you to watch videos and answer simple questions.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Card 1 -->
+                <div
+                    class="glass-card p-6 sm:p-8 rounded-2xl relative group hover:shadow-lg transition-all duration-300 bg-white border border-slate-200/80 flex flex-col justify-between">
+                    <div
+                        class="absolute top-0 right-0 h-[2px] w-0 bg-blue-500 group-hover:w-16 transition-all duration-300">
+                    </div>
+                    <div>
+                        <div class="mb-5 rounded-xl overflow-hidden border border-slate-100 bg-slate-50 flex items-center justify-center h-48">
+                            <img src="images/watch_spin_icon.png" alt="Watch & Spin" class="h-full w-full object-cover transform group-hover:scale-105 transition-all duration-300">
+                        </div>
+                        <span class="text-xs font-semibold text-blue-600 font-mono block mb-3">// WATCH & SPIN</span>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Watch Videos & Spin the Wheel</h4>
+                        <p class="text-xs text-slate-650 leading-relaxed font-semibold">
+                            Usually, big tech companies make money from the videos you watch without giving you anything back. On PESAQUASH, we share those earnings with you. Get paid to watch short videos on TikTok and YouTube, answer daily trivia quizzes, and spin the lucky wheel for free cash prizes.
+                        </p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div
+                    class="glass-card p-6 sm:p-8 rounded-2xl relative group hover:shadow-lg transition-all duration-300 bg-white border border-slate-200/80 flex flex-col justify-between">
+                    <div
+                        class="absolute top-0 right-0 h-[2px] w-0 bg-blue-500 group-hover:w-16 transition-all duration-300">
+                    </div>
+                    <div>
+                        <div class="mb-5 rounded-xl overflow-hidden border border-slate-100 bg-slate-50 flex items-center justify-center h-48">
+                            <img src="images/invite_earn_icon.png" alt="Invite & Earn" class="h-full w-full object-cover transform group-hover:scale-105 transition-all duration-300">
+                        </div>
+                        <span class="text-xs font-semibold text-blue-600 font-mono block mb-3">// INVITE & EARN</span>
+                        <h4 class="text-lg font-bold text-slate-900 mb-2">Invite Friends, Earn Commissions</h4>
+                        <p class="text-xs text-slate-650 leading-relaxed font-semibold">
+                            Earn even more by sharing your invite link. When your friends join and activate their accounts, you get instant cash commissions sent straight to your wallet. Plus, you will earn commissions passively when your friends invite others up to 3 levels!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Earning Math Section -->
+    <section id="commissions" class="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <div class="text-center max-w-xl mx-auto mb-16">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-amber-600 mb-2">Payout Structure</h2>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Three Levels of Referral Commissions</h3>
+            <p class="text-sm text-slate-500 mt-2">Every active referral makes you money automatically down the invite chain.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-6">
+            <!-- Level 1 -->
+            <div class="glass-card p-6 rounded-2xl border-l-4 border-l-blue-500 bg-white shadow-xs">
+                <div class="flex justify-between items-baseline mb-4">
+                    <span class="text-[10px] font-semibold tracking-wider text-blue-600 uppercase font-mono">Level 1 (Direct)</span>
+                    <span class="text-3xl font-black text-slate-900">50%</span>
+                </div>
+                <div class="text-xl font-bold text-blue-600 mb-1">KES 250.00</div>
+                <p class="text-[11px] text-[#64748B] leading-relaxed">Earned instantly in your wallet the moment your direct invite activates their account.</p>
+            </div>
+
+            <!-- Level 2 -->
+            <div class="glass-card p-6 rounded-2xl border-l-4 border-l-blue-500 bg-white shadow-xs">
+                <div class="flex justify-between items-baseline mb-4">
+                    <span class="text-[10px] font-semibold tracking-wider text-blue-600 uppercase font-mono">Level 2 (Indirect)</span>
+                    <span class="text-3xl font-black text-slate-900">20%</span>
+                </div>
+                <div class="text-xl font-bold text-blue-600 mb-1">KES 100.00</div>
+                <p class="text-[11px] text-[#64748B] leading-relaxed">Earned passively when your level 1 referrals invite their own friends to join.</p>
+            </div>
+
+            <!-- Level 3 -->
+            <div class="glass-card p-6 rounded-2xl border-l-4 border-l-blue-500 bg-white shadow-xs">
+                <div class="flex justify-between items-baseline mb-4">
+                    <span class="text-[10px] font-semibold tracking-wider text-blue-600 uppercase font-mono">Level 3 (Indirect)</span>
+                    <span class="text-3xl font-black text-slate-900">10%</span>
+                </div>
+                <div class="text-xl font-bold text-blue-600 mb-1">KES 50.00</div>
+                <p class="text-[11px] text-[#64748B] leading-relaxed">Passive rewards that flow up to you from members invited by your level 2 referrals.</p>
+            </div>
+        </div>
+
+        <!-- Call To Action -->
+        <div
+            class="mt-16 glass-card p-8 sm:p-12 rounded-3xl text-center relative overflow-hidden bg-white border border-[#E2E8F0]">
+            <h4 class="text-xl sm:text-2xl font-bold text-slate-900">Ready to start earning daily cash?</h4>
+            <p class="text-xs text-slate-500 mt-2 max-w-md mx-auto">Create an account in 1 minute, invite your friends, and unlock easy daily tasks.</p>
+            <div class="mt-6">
+                <a href="signup.html"
+                    class="inline-block bg-blue-600 text-white hover:bg-blue-700 font-bold text-xs uppercase tracking-widest py-3.5 px-8 rounded-xl transition-all shadow-md transform active:scale-[0.98]">
+                    Register Account Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 bg-[#F8FAFC] py-6 text-center text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase">
+        <p>© 2026 PESAQUASH AGENCIES. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            const hamIcon = document.getElementById("hamburger-icon");
+            const closeIcon = document.getElementById("close-icon");
+            
+            if (menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+                hamIcon.classList.add("hidden");
+                closeIcon.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+                hamIcon.classList.remove("hidden");
+                closeIcon.classList.add("hidden");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

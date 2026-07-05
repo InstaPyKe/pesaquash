@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite Friends | PESAQUASH</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Smooth border radius overrides */
+        .glass-card, .bg-slate-50, .bg-white, .bg-slate-100, .bg-blue-50\/50, .bg-blue-50\/80 {
+            border-radius: 24px !important;
+        }
+        button, input, select, a.inline-block, a.block, .rounded-xl, .rounded-2xl {
+            border-radius: 16px !important;
+        }
+
+        /* Big size bold thick font overrides */
+        h1, h2, h3, h4 {
+            font-weight: 900 !important;
+            letter-spacing: -0.035em !important;
+        }
+        .font-black, .font-extrabold, .font-bold {
+            font-weight: 850 !important;
+        }
+        .text-[10px], .text-[9px] {
+            font-size: 11px !important;
+            font-weight: 700 !important;
+        }
+        .text-xs {
+            font-size: 13px !important;
+        }
+        .text-sm {
+            font-size: 15px !important;
+        }
+        .text-base {
+            font-size: 18px !important;
+        }
+        .text-lg {
+            font-size: 20px !important;
+        }
+        .text-xl {
+            font-size: 24px !important;
+        }
+        .text-2xl {
+            font-size: 28px !important;
+        }
+        .text-3xl {
+            font-size: 36px !important;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .nested-row-container {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+    <!-- Custom Alerts Library -->
+    <script src="../public/js/system-alerts.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem("maintenance_mode") === "true") {
+                document.body.innerHTML = `
+                    <div class="min-h-screen bg-[#F8FAFC] flex flex-col justify-center items-center px-4 font-sans selection:bg-rose-500/10 selection:text-rose-900">
+                        <div class="max-w-md w-full glass-card bg-blue-50/50 border border-blue-200/60 p-8 rounded-2xl shadow-xl text-center space-y-5">
+                            <div class="h-12 w-12 bg-blue-50 border border-blue-200/60 text-blue-600 rounded-full flex items-center justify-center mx-auto text-xl animate-bounce">⚙️</div>
+                            <h2 class="text-xl font-black text-slate-900 uppercase font-mono tracking-wider">System Under Maintenance</h2>
+                            <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                PESAQUASH is currently undergoing scheduled upgrades. Access to the member workspace is temporarily suspended.
+                            </p>
+                            <div class="pt-2">
+                                <a href="../public/signin.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-xs">
+                                    Return to Log In
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.className = "bg-[#F8FAFC] min-h-screen flex flex-col justify-center items-center";
+            } else if (localStorage.getItem("force_logout") === "true") {
+                localStorage.removeItem("logged_in_user");
+                localStorage.removeItem("force_logout");
+                alert("The administrator has closed the session. You have been logged out.");
+                window.location.href = "../public/signin.html";
+            }
+        });
+    </script>
+</head>
+
+<body
+    class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen flex flex-col font-semibold selection:bg-emerald-500/20 selection:text-emerald-800">
+
+    <!-- Top Sticky Header -->
+    <header class="sticky top-0 bg-white border-b border-slate-200/80 shadow-xs z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="text-lg font-black tracking-wider text-slate-900 uppercase font-mono">Referral Program</span>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <!-- Notification Bell -->
+                <button onclick="alert('No new notifications')" class="relative p-2 text-slate-500 hover:text-blue-600 transition bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 shadow-xs focus:outline-none cursor-pointer">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                    <span class="absolute top-1.5 right-1.5 h-2 w-2 bg-blue-600 rounded-full ring-2 ring-white"></span>
+                </button>
+                <!-- Profile Avatar -->
+                <a href="userprofile.html" class="p-2 text-slate-500 hover:text-blue-600 transition bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 shadow-xs">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Frame -->
+    <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-6">
+
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-slate-900 tracking-tight">Invite Friends & Earn Passive Cash</h1>
+                <p class="text-xs text-slate-500 mt-1">Share your personal invite link and earn commissions automatically up to 3 levels.</p>
+            </div>
+            <div>
+                <a href="userdashboard.html"
+                    class="inline-block bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl border border-slate-200 shadow-xs transition active:scale-[0.98]">
+                    ← Return to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- 1. One-Click Copy Module Container -->
+        <div class="glass-card bg-blue-50/50 p-5 rounded-2xl border border-blue-100 shadow-xs">
+            <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-2">Your Personal Invite Link</label>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                    <input id="referral-url" type="text" readonly
+                        value="https://pesaquash.co.ke/public/signup.html?ref=se-94821"
+                        class="w-full bg-white border border-slate-200 text-xs font-mono text-slate-700 px-4 py-3.5 rounded-xl focus:outline-none select-all">
+                </div>
+                <button onclick="copyReferralLink()" id="copy-btn"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-widest px-6 py-3.5 sm:py-0 rounded-xl shadow-xs transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]">
+                    Copy Invite Link
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. Structured, Togglable Multi-Level Master Table Framework -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
+            <div class="p-4 bg-slate-100/70 border-b border-slate-200 flex justify-between items-center">
+                <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500">Your Referral Network</span>
+                <span class="text-[10px] font-mono text-slate-500 bg-slate-200/50 px-2 py-0.5 rounded">Click a level to view members</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr
+                            class="bg-[#F8FAFC] border-b border-slate-200 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                            <th class="p-4 w-1/3">Referral Level</th>
+                            <th class="p-4 w-1/3">Members Invited</th>
+                            <th class="p-4 w-1/3">Commissions Earned</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="referrals-tbody" class="divide-y divide-slate-100 font-mono">
+                        <!-- Dynamic rows injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentUser = null;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const loggedInUserStr = localStorage.getItem("logged_in_user");
+            if (!loggedInUserStr) {
+                window.location.href = "../public/signin.html";
+                return;
+            }
+            currentUser = JSON.parse(loggedInUserStr);
+
+            // Set personal referral link
+            const origin = window.location.origin;
+            document.getElementById("referral-url").value = `${origin}/public/signup.html?ref=${currentUser.username}`;
+
+            await loadReferralNetwork();
+        });
+
+        async function loadReferralNetwork() {
+            try {
+                const response = await fetch(`/api/users/referrals?userId=${currentUser.id}`);
+                const data = await response.json();
+                if (data.success) {
+                    const tbody = document.getElementById("referrals-tbody");
+                    tbody.innerHTML = "";
+
+                    // Helper to render nested rows table
+                    const renderNestedTable = (users) => {
+                        if (users.length === 0) {
+                            return `<div class="p-3 text-center text-slate-400 italic text-[11px]">No downlines in this tier yet.</div>`;
+                        }
+
+                        let rowsHtml = "";
+                        users.forEach(u => {
+                            const badge = u.is_active 
+                                ? `<span class="text-blue-600 font-bold bg-blue-50 px-1.5 py-0.5 rounded text-[10px] border border-blue-100">Active</span>`
+                                : `<span class="text-rose-600 font-bold bg-rose-50 px-1.5 py-0.5 rounded text-[10px] border border-rose-100">Inactive</span>`;
+                            rowsHtml += `
+                                <tr>
+                                    <td class="p-3 text-slate-700 font-semibold">${u.username} (${u.phone})</td>
+                                    <td class="p-3">${badge}</td>
+                                    <td class="p-3 font-bold text-slate-900">KES ${parseFloat(u.commission_earned).toFixed(2)}</td>
+                                </tr>
+                            `;
+                        });
+
+                        return `
+                            <table class="w-full bg-white rounded-xl border border-slate-200 shadow-xs divide-y divide-slate-100 overflow-hidden text-xs">
+                                <tbody class="divide-y divide-slate-50">
+                                    ${rowsHtml}
+                                </tbody>
+                            </table>
+                        `;
+                    };
+
+                    // Append Level 1
+                    tbody.innerHTML += `
+                        <tr class="bg-blue-50/10 hover:bg-blue-50/20 transition-colors">
+                            <td class="p-4">
+                                <button onclick="toggleHierarchy('level-1-nested')"
+                                    class="flex items-center gap-2 font-bold text-slate-900 hover:text-blue-700 cursor-pointer text-left focus:outline-none">
+                                    <span class="text-blue-600 font-black transition-transform duration-200 inline-block" id="level-1-arrow">▶</span> Level 1 (Direct)
+                                    <span class="text-[9px] bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded font-normal font-mono">50% Commission</span>
+                                </button>
+                            </td>
+                            <td class="p-4 text-slate-500">${data.level1.length} ${data.level1.length === 1 ? 'friend' : 'friends'} invited</td>
+                            <td class="p-4 font-bold text-blue-600">KES ${data.level1_total.toFixed(2)} Total</td>
+                        </tr>
+                        <tr id="level-1-nested" class="hidden nested-row-container bg-slate-50/30">
+                            <td colspan="3" class="p-4 pl-8 border-l-4 border-blue-500">
+                                ${renderNestedTable(data.level1)}
+                            </td>
+                        </tr>
+                    `;
+
+                    // Append Level 2
+                    tbody.innerHTML += `
+                        <tr class="bg-amber-50/10 hover:bg-amber-50/20 transition-colors">
+                            <td class="p-4">
+                                <button onclick="toggleHierarchy('level-2-nested')"
+                                    class="flex items-center gap-2 font-bold text-slate-900 hover:text-amber-700 cursor-pointer text-left focus:outline-none">
+                                    <span class="text-amber-600 font-black transition-transform duration-200 inline-block" id="level-2-arrow">▶</span> Level 2 (Indirect)
+                                    <span class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-normal font-mono">20% Commission</span>
+                                </button>
+                            </td>
+                            <td class="p-4 text-slate-500">${data.level2.length} ${data.level2.length === 1 ? 'friend' : 'friends'} invited</td>
+                            <td class="p-4 font-bold text-amber-600">KES ${data.level2_total.toFixed(2)} Total</td>
+                        </tr>
+                        <tr id="level-2-nested" class="hidden nested-row-container bg-slate-50/30">
+                            <td colspan="3" class="p-4 pl-8 border-l-4 border-amber-500">
+                                ${renderNestedTable(data.level2)}
+                            </td>
+                        </tr>
+                    `;
+
+                    // Append Level 3
+                    tbody.innerHTML += `
+                        <tr class="bg-purple-50/10 hover:bg-purple-50/20 transition-colors">
+                            <td class="p-4">
+                                <button onclick="toggleHierarchy('level-3-nested')"
+                                    class="flex items-center gap-2 font-bold text-slate-900 hover:text-purple-700 cursor-pointer text-left focus:outline-none">
+                                    <span class="text-purple-600 font-black transition-transform duration-200 inline-block" id="level-3-arrow">▶</span> Level 3 (Indirect)
+                                    <span class="text-[9px] bg-purple-100 text-purple-800 px-1.5 py-0.2 rounded font-normal font-mono">10% Commission</span>
+                                </button>
+                            </td>
+                            <td class="p-4 text-slate-500">${data.level3.length} ${data.level3.length === 1 ? 'friend' : 'friends'} invited</td>
+                            <td class="p-4 font-bold text-purple-600">KES ${data.level3_total.toFixed(2)} Total</td>
+                        </tr>
+                        <tr id="level-3-nested" class="hidden nested-row-container bg-slate-50/30">
+                            <td colspan="3" class="p-4 pl-8 border-l-4 border-purple-500">
+                                ${renderNestedTable(data.level3)}
+                            </td>
+                        </tr>
+                    `;
+                }
+            } catch (error) {
+                console.error("Failed to load referrals list:", error);
+            }
+        }
+
+        function copyReferralLink() {
+            const copyText = document.getElementById("referral-url");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            navigator.clipboard.writeText(copyText.value);
+
+            const btn = document.getElementById("copy-btn");
+            btn.innerText = "Copied ✓";
+            btn.classList.replace("bg-blue-600", "bg-blue-800");
+
+            setTimeout(() => {
+                btn.innerText = "Copy Invite Link";
+                btn.classList.replace("bg-blue-800", "bg-blue-600");
+            }, 2000);
+        }
+
+        function toggleHierarchy(elementId) {
+            const targetRow = document.getElementById(elementId);
+            const levelNum = elementId.split('-')[1];
+            const arrowSpan = document.getElementById(`level-${levelNum}-arrow`);
+
+            if (targetRow.classList.contains("hidden")) {
+                targetRow.classList.remove("hidden");
+                arrowSpan.style.transform = "rotate(90deg)";
+            } else {
+                targetRow.classList.add("hidden");
+                arrowSpan.style.transform = "none";
+            }
+        }
+    </script>
+    <!-- Consistent Footer -->
+    <footer class="border-t border-slate-200 bg-white py-6 text-center text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mt-12">
+        <p>© 2026 PESAQUASH AGENCIES. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Directory | PESAQUASH</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+    </style>
+    <!-- Custom Alerts Library -->
+    <script src="../public/js/system-alerts.js"></script>
+</head>
+
+<body
+    class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen flex flex-col selection:bg-rose-500/10 selection:text-rose-900">
+
+    <!-- Header Panel -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="admindashboard.html" class="inline-flex items-center space-x-2.5 hover:opacity-90 transition">
+                    <div class="h-8 w-8 bg-blue-600 flex items-center justify-center rounded-lg text-white font-black text-sm tracking-tight shadow-md shadow-blue-500/20">
+                        P
+                    </div>
+                    <span class="text-sm font-black tracking-wider text-slate-900 font-mono uppercase">PESAQUASH Admin</span>
+                </a>
+            </div>
+
+            <!-- Horizontal Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-5">
+                <a href="admindashboard.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Overview</a>
+                <a href="adminusers.html" class="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 border-b-2 border-blue-650 transition px-1 py-1">Members</a>
+                <a href="admintasks.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Tasks</a>
+                <a href="adminmanager.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Staff</a>
+                <a href="adminsystemcontroller.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Controls</a>
+                <a href="../finance/financedashboard.html" class="text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-500 px-3 py-1.5 rounded-xl border border-slate-200 transition">Finance Desk →</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-mono font-bold uppercase tracking-widest bg-slate-50 border border-slate-100 text-slate-600 font-mono">Members: 14,821</span>
+                <!-- Hamburger Mobile Menu Toggler -->
+                <button onclick="toggleAdminMobileMenu()" class="md:hidden text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="admin-mobile-menu" class="hidden md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md px-4 py-4 space-y-2.5 shadow-lg">
+            <a href="admindashboard.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Overview</a>
+            <a href="adminusers.html" class="block text-xs font-bold uppercase tracking-wider text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Members</a>
+            <a href="admintasks.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Tasks</a>
+            <a href="adminmanager.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Staff</a>
+            <a href="adminsystemcontroller.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Controls</a>
+            <a href="../finance/financedashboard.html" class="block text-center text-xs font-bold uppercase tracking-wider py-2.5 px-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 transition">Finance Desk →</a>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-8 space-y-6">
+
+        <div
+            class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-slate-55 p-5 rounded-2xl border border-slate-200 shadow-xs">
+            <div>
+                <h1 class="text-lg font-bold text-slate-900 tracking-tight">All Registered Members</h1>
+                <p class="text-xs text-slate-500 mt-0.5 font-mono">Search for members, check payment status, and manage account access.</p>
+            </div>
+            <div class="flex flex-1 max-w-md w-full gap-2">
+                <input type="text" id="user-search-input" onkeyup="filterDirectorySpreadsheet()"
+                    placeholder="Search by phone, account ID, or referrer ID..."
+                    class="w-full bg-white border border-slate-200 text-xs font-mono text-slate-700 px-4 py-3 rounded-xl focus:outline-none focus:border-blue-500 transition-all font-semibold">
+            </div>
+        </div>
+
+        <div class="bg-blue-50/40 border border-blue-150 rounded-2xl shadow-xs overflow-hidden">
+            <div class="overflow-x-auto">
+                <table id="participant-spreadsheet"
+                    class="w-full text-left border-collapse font-mono text-xs whitespace-nowrap">
+                    <thead>
+                        <tr
+                            class="bg-blue-100/30 border-b border-blue-150 text-[10px] text-blue-700 font-bold uppercase tracking-wider">
+                            <th class="p-4">Account ID</th>
+                            <th class="p-4">Phone Number</th>
+                            <th class="p-4">Referrer ID</th>
+                            <th class="p-4">Wallet Balance</th>
+                            <th class="p-4">Payment Status</th>
+                            <th class="p-4">Joined Date</th>
+                            <th class="p-4 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="members-tbody" class="divide-y divide-slate-100">
+                        <!-- Dynamic rows injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const loggedInAdminStr = localStorage.getItem("logged_in_admin");
+            if (!loggedInAdminStr) {
+                window.location.href = "../admin-login.html";
+                return;
+            }
+
+            await loadMembersList();
+        });
+
+        async function loadMembersList() {
+            try {
+                const response = await fetch('/api/admin/users');
+                const data = await response.json();
+                if (data.success) {
+                    const tbody = document.getElementById("members-tbody");
+                    tbody.innerHTML = "";
+
+                    if (data.users.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-450 font-bold italic">No registered members found.</td></tr>`;
+                        return;
+                    }
+
+                    data.users.forEach(user => {
+                        const dateStr = new Date(user.created_at).toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false
+                        });
+
+                        const statusBadge = user.is_active 
+                            ? `<span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-bold border border-emerald-100 text-[10px]">Activated</span>`
+                            : `<span class="text-rose-700 bg-rose-50 px-2 py-0.5 rounded font-bold border border-rose-100 text-[10px]">Blocked / Inactive</span>`;
+
+                        const actionBtn = user.is_active
+                            ? `<button onclick="toggleUserStatus(${user.id}, '${user.username}', true)" class="bg-rose-600 hover:bg-rose-750 text-white font-bold text-[9px] uppercase tracking-wider px-3.5 py-1.5 rounded-xl cursor-pointer transition">Block Account</button>`
+                            : `<button onclick="toggleUserStatus(${user.id}, '${user.username}', false)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[9px] uppercase tracking-wider px-3.5 py-1.5 rounded-xl cursor-pointer transition">Unblock Account</button>`;
+
+                        const tr = document.createElement("tr");
+                        tr.className = "hover:bg-slate-50/70 transition";
+                        tr.innerHTML = `
+                            <td class="p-4 font-bold text-slate-900">${user.username}</td>
+                            <td class="p-4 text-slate-700">${user.phone}</td>
+                            <td class="p-4 text-slate-500 font-bold">${user.referrer || 'Direct Join'}</td>
+                            <td class="p-4 font-bold text-slate-900 font-mono">KES ${parseFloat(user.wallet_balance).toFixed(2)}</td>
+                            <td class="p-4">${statusBadge}</td>
+                            <td class="p-4 text-slate-450 font-semibold">${dateStr}</td>
+                            <td class="p-4 text-right">${actionBtn}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to load members list:", error);
+            }
+        }
+
+        // Filters the directory spreadsheet
+        function filterDirectorySpreadsheet() {
+            const input = document.getElementById("user-search-input");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("participant-spreadsheet");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let matchFound = false;
+                const cellsToSearch = [tr[i].getElementsByTagName("td")[0], tr[i].getElementsByTagName("td")[1], tr[i].getElementsByTagName("td")[2]];
+
+                for (let j = 0; j < cellsToSearch.length; j++) {
+                    if (cellsToSearch[j]) {
+                        const txtValue = cellsToSearch[j].textContent || cellsToSearch[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (matchFound) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        async function toggleUserStatus(userId, username, currentlyActive) {
+            const promptText = currentlyActive 
+                ? `Are you sure you want to block account for ${username}? This will freeze their balance and suspend active workspace access.`
+                : `Are you sure you want to unblock/activate account for ${username}?`;
+
+            const confirmation = await showSystemConfirm(promptText);
+
+            if (confirmation) {
+                try {
+                    const response = await fetch('/api/admin/users/toggle', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ userId })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        alert(data.message || `Account for ${username} status updated.`);
+                        await loadMembersList();
+                    } else {
+                        alert("Failed to update user account status.");
+                    }
+                } catch (error) {
+                    console.error("Toggle user status error:", error);
+                    alert("Network error updating status.");
+                }
+            }
+        }
+
+        function toggleAdminMobileMenu() {
+            const menu = document.getElementById("admin-mobile-menu");
+            if (menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+            }
+        }
+    </script>
+</body>
+
+</html>

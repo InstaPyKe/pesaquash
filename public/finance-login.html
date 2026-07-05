@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Login | PESAQUASH</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    </style>
+    <!-- Custom Alerts Library -->
+    <script src="js/system-alerts.js"></script>
+</head>
+
+<body
+    class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen flex flex-col justify-center relative overflow-x-hidden selection:bg-rose-500/20 selection:text-rose-900">
+
+    <!-- Ambient background glows -->
+    <div
+        class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-200/30 rounded-full blur-[120px] pointer-events-none z-0">
+    </div>
+    <div
+        class="absolute bottom-1/4 left-1/3 w-80 h-80 bg-rose-200/20 rounded-full blur-[100px] pointer-events-none z-0">
+    </div>
+
+    <div class="sm:mx-auto sm:w-full sm:max-w-md px-4 z-10">
+        <!-- Logo Branding Header -->
+        <div class="text-center mb-8">
+            <a href="index.html" class="inline-flex items-center space-x-2.5 hover:opacity-90 transition">
+                <div class="h-9 w-9 bg-purple-650 flex items-center justify-center rounded-lg text-white font-black text-base tracking-tight shadow-md shadow-purple-500/20">
+                    P
+                </div>
+                <span class="text-xl font-black tracking-wider text-slate-900 font-mono uppercase">PESAQUASH Finance</span>
+            </a>
+            <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-900">
+                Finance Management Portal
+            </h2>
+            <p class="mt-1.5 text-xs text-slate-500">
+                Authenticate your financial access PIN to gain access.
+            </p>
+        </div>
+
+        <!-- Authentication Card Container -->
+        <div class="glass-card bg-slate-50/50 py-8 px-6 sm:px-10 rounded-2xl border border-purple-200/60 shadow-xl shadow-slate-100/50">
+
+            <form class="space-y-5" onsubmit="handleFinanceLogin(event)">
+
+                <!-- Administrative PIN -->
+                <div>
+                    <label for="pin"
+                        class="block text-[11px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1.5">Finance Portal PIN</label>
+                    <input id="pin" name="pin" type="password" required maxlength="6" pattern="\d{6}" placeholder="Enter 6-digit PIN"
+                        class="w-full px-3.5 py-2.5 text-center text-lg tracking-[0.5em] rounded-xl border border-slate-200 bg-white placeholder-slate-400 focus:outline-none focus:border-purple-500 transition-all font-bold text-slate-800">
+                </div>
+
+                <!-- Form Submit Button -->
+                <div>
+                    <button type="submit"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs uppercase tracking-widest py-3.5 px-4 rounded-xl shadow-md active:scale-[0.98] transition-all cursor-pointer">
+                        Authenticate Portal →
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6 text-center text-xs">
+                <a href="signin.html" class="font-bold text-slate-500 hover:text-purple-600 transition">← Return to Member Login</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        async function handleFinanceLogin(event) {
+            event.preventDefault();
+            const pin = document.getElementById('pin').value;
+
+            if (!pin || pin.length !== 6 || isNaN(pin)) {
+                alert("Please enter a valid 6-digit finance access PIN.");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/finance-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ pin })
+                });
+
+                const data = await response.json();
+
+                if (response.status === 200) {
+                    // Save logged in finance session details
+                    localStorage.setItem('logged_in_finance', JSON.stringify(data.finance));
+                    alert("Authentication successful. Opening finance management cockpit...");
+                    window.location.href = "../finance/financedashboard.html";
+                } else {
+                    alert(data.message || data.error || "Authentication failed. Check your PIN.");
+                }
+            } catch (error) {
+                console.error("Finance Login network error:", error);
+                alert("Unable to connect to the authentication server. Please ensure the backend is running.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

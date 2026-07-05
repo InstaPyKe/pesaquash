@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | PESAQUASH</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+    </style>
+    <!-- Custom Alerts Library -->
+    <script src="js/system-alerts.js"></script>
+</head>
+
+<body
+    class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen flex flex-col justify-center relative overflow-x-hidden selection:bg-emerald-500/20 selection:text-emerald-800">
+
+    <!-- Ambient background glows -->
+    <div
+        class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-200/20 rounded-full blur-[120px] pointer-events-none z-0">
+    </div>
+    <div
+        class="absolute bottom-1/4 left-1/3 w-80 h-80 bg-emerald-200/20 rounded-full blur-[100px] pointer-events-none z-0">
+    </div>
+
+    <div class="sm:mx-auto sm:w-full sm:max-w-md px-4 z-10">
+        <!-- Logo Branding Header -->
+        <div class="text-center mb-8">
+            <a href="index.html" class="inline-flex items-center space-x-2.5 hover:opacity-90 transition">
+                <div class="h-9 w-9 bg-blue-600 flex items-center justify-center rounded-lg text-white font-black text-base tracking-tight shadow-md shadow-blue-500/20">
+                    P
+                </div>
+                <span class="text-xl font-black tracking-wider text-slate-900 font-mono uppercase">PESAQUASH</span>
+            </a>
+            <h2 class="mt-4 text-2xl font-bold tracking-tight text-slate-900">
+                Log In to Your Account
+            </h2>
+            <p class="mt-1.5 text-xs text-slate-500">
+                Enter your email address and password to start tasks.
+            </p>
+        </div>
+
+        <!-- Authentication Card Container -->
+        <div class="glass-card bg-blue-50/50 py-8 px-6 sm:px-10 rounded-2xl border border-blue-200/60 shadow-xl shadow-slate-100/50">
+
+            <form class="space-y-5" onsubmit="handleLogin(event)">
+
+                <!-- Email Address -->
+                <div>
+                    <label for="email"
+                        class="block text-[11px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1.5">Email Address</label>
+                    <input id="email" name="email" type="email" required placeholder="e.g., john@example.com"
+                        class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-white placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-semibold text-slate-800">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="password"
+                            class="block text-[11px] font-mono font-bold tracking-wider text-slate-500 uppercase">Password</label>
+                        <a href="#"
+                            onclick="alert('Please contact admin support to reset your password.')"
+                            class="text-[10px] font-bold text-blue-600 hover:text-blue-700 tracking-wide font-mono uppercase">Forgot Password?</a>
+                    </div>
+                    <input id="password" name="password" type="password" required placeholder="••••••••"
+                        class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-white placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-semibold text-slate-800">
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember_me" name="remember_me" type="checkbox"
+                            class="h-4 w-4 rounded border-slate-350 text-blue-600 focus:ring-blue-500">
+                        <label for="remember_me" class="ml-2 block text-xs text-slate-500 select-none font-semibold">
+                            Remember me
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Form Submit Button -->
+                <div>
+                    <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-widest py-3.5 px-4 rounded-xl shadow-md active:scale-[0.98] transition-all cursor-pointer">
+                        Sign In
+                    </button>
+                </div>
+            </form>
+
+            <!-- Navigation Outward Anchors -->
+            <div class="mt-6 text-center text-xs">
+                <span class="text-slate-500">New member?</span>
+                <a href="signup.html" class="font-bold text-blue-600 hover:text-blue-700 ml-1">Create an account</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !email.includes('@')) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.status === 200) {
+                    // Save logged in user session details
+                    localStorage.setItem('logged_in_user', JSON.stringify(data.user));
+                    
+                    if (data.user.isActive) {
+                        window.location.href = "../users/userdashboard.html";
+                    } else {
+                        localStorage.setItem('pending_activation_username', data.user.username);
+                        localStorage.setItem('pending_activation_phone', data.user.phone);
+                        window.location.href = "activationfee.html";
+                    }
+                } else {
+                    alert(data.message || data.error || "Login failed. Please check your credentials.");
+                }
+            } catch (error) {
+                console.error("Login network error:", error);
+                alert("Unable to connect to the authentication server. Please ensure the backend is running.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

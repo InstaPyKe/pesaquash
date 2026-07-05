@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings | PESAQUASH</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+    </style>
+    <!-- Custom Alerts Library -->
+    <script src="../public/js/system-alerts.js"></script>
+</head>
+
+<body
+    class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen flex flex-col selection:bg-indigo-500/10 selection:text-indigo-900">
+
+    <!-- Header Panel -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="admindashboard.html" class="inline-flex items-center space-x-2.5 hover:opacity-90 transition">
+                    <div class="h-8 w-8 bg-blue-600 flex items-center justify-center rounded-lg text-white font-black text-sm tracking-tight shadow-md shadow-blue-500/20">
+                        P
+                    </div>
+                    <span class="text-sm font-black tracking-wider text-slate-900 font-mono uppercase">PESAQUASH Admin</span>
+                </a>
+            </div>
+
+            <!-- Horizontal Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-5">
+                <a href="admindashboard.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Overview</a>
+                <a href="adminusers.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Members</a>
+                <a href="admintasks.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Tasks</a>
+                <a href="adminmanager.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Staff</a>
+                <a href="adminsystemcontroller.html" class="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 border-b-2 border-blue-650 transition px-1 py-1">Controls</a>
+                <a href="../finance/financedashboard.html" class="text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-500 px-3 py-1.5 rounded-xl border border-slate-200 transition">Finance Desk →</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-mono font-bold uppercase tracking-widest bg-emerald-50 border border-emerald-100 text-emerald-600">● Synced</span>
+                <!-- Hamburger Mobile Menu Toggler -->
+                <button onclick="toggleAdminMobileMenu()" class="md:hidden text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="admin-mobile-menu" class="hidden md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md px-4 py-4 space-y-2.5 shadow-lg">
+            <a href="admindashboard.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Overview</a>
+            <a href="adminusers.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Members</a>
+            <a href="admintasks.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Tasks</a>
+            <a href="adminmanager.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Staff</a>
+            <a href="adminsystemcontroller.html" class="block text-xs font-bold uppercase tracking-wider text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Controls</a>
+            <a href="../finance/financedashboard.html" class="block text-center text-xs font-bold uppercase tracking-wider py-2.5 px-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 transition">Finance Desk →</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8 space-y-6">
+
+        <div>
+            <h1 class="text-xl font-bold text-slate-900 tracking-tight">System Settings & Controls</h1>
+            <p class="text-xs text-slate-500 mt-1">Manage global configurations, set commission rates, update withdrawal limits, or toggle maintenance mode.</p>
+        </div>
+
+        <form onsubmit="saveSystemSettings(event)" class="space-y-6">
+
+            <!-- Card 1: Maintenance Mode & Accessibility Lock -->
+            <div class="glass-card bg-slate-50 rounded-2xl shadow-xs p-6 border border-slate-200 space-y-4">
+                <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-505">// System Accessibility & Lock Controls</h2>
+                
+                <!-- Toggle 1: Global Maintenance Mode -->
+                <div class="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold text-slate-900 block">Global Maintenance Mode</span>
+                        <span class="text-[10px] text-slate-400 block mt-0.5 font-semibold">Toggling this ON makes all user dashboard and task pages inaccessible.</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="maintenance-toggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-650"></div>
+                    </label>
+                </div>
+
+                <!-- Toggle 2: Force Terminate All User Sessions -->
+                <div class="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold text-slate-900 block">Force Session Termination</span>
+                        <span class="text-[10px] text-slate-400 block mt-0.5 font-semibold">Immediately log out all logged-in users when maintenance mode is active.</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="force-logout-toggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-650"></div>
+                    </label>
+                </div>
+
+                <!-- Toggle 3: Block User Registration -->
+                <div class="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold text-slate-900 block">Block New Member Registrations</span>
+                        <span class="text-[10px] text-slate-400 block mt-0.5 font-semibold">Toggling this ON blocks signups, displaying a "Registration Closed" warning.</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="registration-block-toggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-650"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Card 2: Referral Commissions -->
+            <div class="glass-card bg-blue-50/50 rounded-2xl shadow-xs p-6 border border-blue-150 space-y-4">
+                <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-blue-600">// Referral Commission Rates (%)</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">Level 1 (Direct)</label>
+                        <div class="relative">
+                            <input type="number" required min="0" max="100" value="50" id="commission-l1"
+                                class="w-full bg-white border border-slate-200 text-xs font-mono px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all pr-8 font-semibold text-slate-800">
+                            <span class="absolute inset-y-0 right-3 flex items-center text-xs text-slate-450 font-bold">%</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">Level 2 (Indirect)</label>
+                        <div class="relative">
+                            <input type="number" required min="0" max="100" value="20" id="commission-l2"
+                                class="w-full bg-white border border-slate-200 text-xs font-mono px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all pr-8 font-semibold text-slate-800">
+                            <span class="absolute inset-y-0 right-3 flex items-center text-xs text-slate-450 font-bold">%</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">Level 3 (Indirect)</label>
+                        <div class="relative">
+                            <input type="number" required min="0" max="100" value="10" id="commission-l3"
+                                class="w-full bg-white border border-slate-200 text-xs font-mono px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all pr-8 font-semibold text-slate-800">
+                            <span class="absolute inset-y-0 right-3 flex items-center text-xs text-slate-450 font-bold">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: System Bounds & Limits -->
+            <div class="glass-card bg-purple-50/50 rounded-2xl shadow-xs p-6 border border-purple-150 space-y-4">
+                <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-purple-650">// Payout & Task Limits</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">Minimum Withdrawal (KES)</label>
+                        <input type="number" required min="1" value="50" id="min-withdrawal"
+                            class="w-full bg-white border border-slate-200 text-xs font-mono px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all font-semibold text-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">Daily Task Limit (Per User)</label>
+                        <input type="number" required min="0" value="8" id="daily-task-limit"
+                            class="w-full bg-white border border-slate-200 text-xs font-mono px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all font-semibold text-slate-800">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-widest py-3.5 px-6 rounded-xl shadow-md transition-all cursor-pointer active:scale-[0.98]">
+                    Save System Settings
+                </button>
+            </div>
+
+        </form>
+
+    </main>
+
+    <script>
+        // Load settings on load to match stored state
+        document.addEventListener("DOMContentLoaded", async function() {
+            const loggedInAdminStr = localStorage.getItem("logged_in_admin");
+            if (!loggedInAdminStr) {
+                window.location.href = "../admin-login.html";
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/admin/settings');
+                const data = await response.json();
+                if (data.success && data.settings) {
+                    const s = data.settings;
+                    document.getElementById("maintenance-toggle").checked = s.maintenance_mode === "true";
+                    document.getElementById("force-logout-toggle").checked = s.force_logout === "true";
+                    document.getElementById("registration-block-toggle").checked = s.registration_blocked === "true";
+
+                    document.getElementById("commission-l1").value = s.commission_l1 || "50";
+                    document.getElementById("commission-l2").value = s.commission_l2 || "20";
+                    document.getElementById("commission-l3").value = s.commission_l3 || "10";
+                    document.getElementById("min-withdrawal").value = s.min_withdrawal || "50";
+                    document.getElementById("daily-task-limit").value = s.daily_task_limit || "8";
+                }
+            } catch (error) {
+                console.error("Failed to load settings:", error);
+            }
+        });
+
+        async function saveSystemSettings(event) {
+            event.preventDefault();
+            
+            const isMaintenance = document.getElementById("maintenance-toggle").checked;
+            const forceLogout = document.getElementById("force-logout-toggle").checked;
+            const isRegBlocked = document.getElementById("registration-block-toggle").checked;
+
+            const l1 = document.getElementById("commission-l1").value;
+            const l2 = document.getElementById("commission-l2").value;
+            const l3 = document.getElementById("commission-l3").value;
+            const minWithdraw = document.getElementById("min-withdrawal").value;
+            const tasksLimit = document.getElementById("daily-task-limit").value;
+
+            // Instantly sync client-side switches for active browser session
+            localStorage.setItem("maintenance_mode", isMaintenance ? "true" : "false");
+            localStorage.setItem("force_logout", forceLogout ? "true" : "false");
+            localStorage.setItem("registration_blocked", isRegBlocked ? "true" : "false");
+
+            try {
+                const response = await fetch('/api/admin/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        maintenance_mode: isMaintenance ? "true" : "false",
+                        force_logout: forceLogout ? "true" : "false",
+                        registration_blocked: isRegBlocked ? "true" : "false",
+                        commission_l1: l1,
+                        commission_l2: l2,
+                        commission_l3: l3,
+                        min_withdrawal: minWithdraw,
+                        daily_task_limit: tasksLimit
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert(`System configurations saved successfully!\n\nMaintenance: ${isMaintenance ? 'ON' : 'OFF'}\nForce Logout: ${forceLogout ? 'ON' : 'OFF'}\nBlock Reg: ${isRegBlocked ? 'ON' : 'OFF'}\nCommissions: L1 ${l1}%, L2 ${l2}%, L3 ${l3}%\nMin Withdrawal: KES ${minWithdraw}.00\nDaily Tasks: ${tasksLimit} tasks`);
+                } else {
+                    alert("Failed to update system configurations.");
+                }
+            } catch (error) {
+                console.error("Save settings error:", error);
+                alert("Network error saving configurations.");
+            }
+        }
+        function toggleAdminMobileMenu() {
+            const menu = document.getElementById("admin-mobile-menu");
+            if (menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+            }
+        }
+    </script>
+</body>
+
+</html>

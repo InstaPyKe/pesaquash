@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation Payments | PESAQUASH</title>
+    <!-- Tailwind CSS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+    </style>
+    <!-- Custom Alerts Library -->
+    <script src="../public/js/system-alerts.js"></script>
+</head>
+
+<body
+    class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen flex flex-col selection:bg-slate-900/10 selection:text-slate-900">
+
+    <!-- Header Panel -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="financedashboard.html" class="inline-flex items-center space-x-2.5 hover:opacity-90 transition">
+                    <div class="h-8 w-8 bg-blue-600 flex items-center justify-center rounded-lg text-white font-black text-sm tracking-tight shadow-md shadow-blue-500/20">
+                        P
+                    </div>
+                    <span class="text-sm font-black tracking-wider text-slate-900 font-mono uppercase">PESAQUASH Finance</span>
+                </a>
+            </div>
+
+            <!-- Horizontal Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-5">
+                <a href="financedashboard.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Liquidity</a>
+                <a href="activationfeemanager.html" class="text-[11px] font-extrabold uppercase tracking-wider text-blue-600 border-b-2 border-blue-650 transition px-1 py-1">Verify Activations</a>
+                <a href="withdrawalmanager.html" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition px-1 py-1">Approve Payouts</a>
+                <a href="../admin/admindashboard.html" class="text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-500 px-3 py-1.5 rounded-xl border border-slate-200 transition">Admin Deck →</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="handleFinanceLogout()" class="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-mono font-bold uppercase tracking-widest bg-rose-50 border border-rose-100 text-rose-600 cursor-pointer hover:bg-rose-100 transition">Sign Out</button>
+                <!-- Hamburger Mobile Menu Toggler -->
+                <button onclick="toggleFinanceMobileMenu()" class="md:hidden text-slate-500 hover:text-blue-600 focus:outline-none p-2 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="finance-mobile-menu" class="hidden md:hidden border-t border-slate-100 bg-white/95 backdrop-blur-md px-4 py-4 space-y-2.5 shadow-lg">
+            <a href="financedashboard.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Liquidity</a>
+            <a href="activationfeemanager.html" class="block text-xs font-bold uppercase tracking-wider text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Verify Activations</a>
+            <a href="withdrawalmanager.html" class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2 px-3 rounded-lg hover:bg-slate-50 transition">Approve Payouts</a>
+            <a href="../admin/admindashboard.html" class="block text-center text-xs font-bold uppercase tracking-wider py-2.5 px-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 transition">Admin Deck →</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-6xl mx-auto w-full px-4 py-8 space-y-6">
+
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-slate-900 tracking-tight">Activation Payments</h1>
+                <p class="text-xs text-slate-500 mt-1">Check and approve member activation payments of KES 500. You can also manually approve payments if the automatic system fails.</p>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="ledger-search" placeholder="Search transaction code..."
+                    class="bg-white border border-slate-200 text-xs font-mono text-slate-700 px-3.5 py-2 rounded-xl focus:outline-none focus:border-blue-500 transition-all font-semibold">
+            </div>
+        </div>
+
+        <!-- Quick Summary Bar -->
+        <div
+            class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200 font-mono text-xs">
+            <div>
+                <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Auto-Approved Payments</span>
+                <span class="font-black text-emerald-600 block mt-0.5 text-sm">98.4%</span>
+            </div>
+            <div>
+                <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Cost per Activation</span>
+                <span class="font-black text-slate-900 block mt-0.5 text-sm">KES 500.00</span>
+            </div>
+            <div>
+                <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Pending Manual Approvals</span>
+                <span class="font-black text-amber-600 block mt-0.5 text-sm">1 Payment</span>
+            </div>
+        </div>
+
+        <!-- Real-Time Transaction Log Table -->
+        <div class="bg-blue-50/40 border border-blue-150 rounded-2xl shadow-xs overflow-hidden">
+            <div
+                class="p-4 bg-blue-100/30 border-b border-blue-150 text-[10px] font-mono font-bold uppercase tracking-wider text-blue-700">
+                Recent Activation Payments
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse font-mono text-xs">
+                    <thead>
+                        <tr
+                            class="bg-blue-100/30 border-b border-blue-150 text-[10px] text-blue-700 font-bold uppercase tracking-wider">
+                            <th class="p-4">Timestamp</th>
+                            <th class="p-4">Phone Number</th>
+                            <th class="p-4">Transaction Code</th>
+                            <th class="p-4">Amount</th>
+                            <th class="p-4">Payment Status</th>
+                            <th class="p-4 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+
+                        <!-- Row 1: Dropped webhook transaction requiring manual resolve -->
+                        <tr class="bg-amber-50/10 hover:bg-amber-50/20 transition">
+                            <td class="p-4 text-slate-500">Jul 03, 18:24</td>
+                            <td class="p-4 font-bold text-slate-900">0725***114</td>
+                            <td class="p-4 text-amber-700 font-black">RGD49MXZ2K</td>
+                            <td class="p-4 font-bold">KES 500.00</td>
+                            <td class="p-4">
+                                <span
+                                    class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-100">Timeout / Pending</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <button onclick="overrideActivation('RGD49MXZ2K', '0725***114')"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
+                                    Approve Payment
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 2: Standard automated settle item -->
+                        <tr class="hover:bg-slate-50/50 transition">
+                            <td class="p-4 text-slate-450">Jul 03, 17:51</td>
+                            <td class="p-4 text-slate-600">0798***881</td>
+                            <td class="p-4 text-slate-700">RGC18PLM9X</td>
+                            <td class="p-4 font-bold">KES 500.00</td>
+                            <td class="p-4">
+                                <span
+                                    class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">Approved (Auto)</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <span class="text-[10px] text-slate-400 italic">Approved by System</span>
+                            </td>
+                        </tr>
+
+                        <!-- Row 3: Standard automated settle item -->
+                        <tr class="hover:bg-slate-50/50 transition">
+                            <td class="p-4 text-slate-450">Jul 03, 16:12</td>
+                            <td class="p-4 text-slate-600">0112***304</td>
+                            <td class="p-4 text-slate-700">RGB77XCV3A</td>
+                            <td class="p-4 font-bold">KES 500.00</td>
+                            <td class="p-4">
+                                <span
+                                    class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">Approved (Auto)</span>
+                            </td>
+                            <td class="p-4 text-right">
+                                <span class="text-[10px] text-slate-400 italic">Approved by System</span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function overrideActivation(trxCode, userEndpoint) {
+            const doubleCheck = await showSystemConfirm(`Are you sure you want to approve transaction ${trxCode} for ${userEndpoint} manually? This will activate their account.`);
+
+            if (doubleCheck) {
+                alert(`Transaction ${trxCode} approved. The user account is now active.`);
+                window.location.reload();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const loggedInFinanceStr = localStorage.getItem("logged_in_finance");
+            if (!loggedInFinanceStr) {
+                window.location.href = "../finance-login.html";
+            }
+        });
+
+        function handleFinanceLogout() {
+            localStorage.removeItem("logged_in_finance");
+            window.location.href = "../finance-login.html";
+        }
+
+        function toggleFinanceMobileMenu() {
+            const menu = document.getElementById("finance-mobile-menu");
+            if (menu.classList.contains("hidden")) {
+                menu.classList.remove("hidden");
+            } else {
+                menu.classList.add("hidden");
+            }
+        }
+    </script>
+</body>
+
+</html>
