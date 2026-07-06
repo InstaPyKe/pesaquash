@@ -171,12 +171,7 @@
                     const s = settingsData.settings;
                     
                     if (s.maintenance_mode === "true") {
-                        if (s.force_logout === "true") {
-                            localStorage.removeItem("logged_in_user");
-                            alert("The system is undergoing maintenance and your session has been closed.");
-                            window.location.href = "../public/signin.html";
-                            return;
-                        }
+                        localStorage.removeItem("logged_in_user");
                         
                         document.body.innerHTML = `
                             <div class="min-h-screen bg-[#F8FAFC] flex flex-col justify-center items-center px-4 font-sans selection:bg-rose-500/10 selection:text-rose-900">
