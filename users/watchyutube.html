@@ -199,15 +199,46 @@
                     `;
                 }
             } else if (type === 'tiktok') {
+                let username = 'pesaquash';
                 let tiktokId = '';
-                const tiktokRegExp = /\/video\/(\d+)/;
-                const match = url.match(tiktokRegExp);
-                if (match && match[1]) {
-                    tiktokId = match[1];
-                }
-                if (tiktokId) {
-                    return `<iframe class="absolute inset-0 w-full h-full rounded-xl" src="https://www.tiktok.com/embed/v2/${tiktokId}" frameborder="0" allowfullscreen></iframe>`;
+                
+                const pathRegex = /@([^\/]+)\/video\/(\d+)/;
+                const pathMatch = url.match(pathRegex);
+                if (pathMatch) {
+                    username = pathMatch[1];
+                    tiktokId = pathMatch[2];
                 } else {
+                    const idRegex = /\/video\/(\d+)/;
+                    const idMatch = url.match(idRegex);
+                    if (idMatch) {
+                        tiktokId = idMatch[1];
+                    }
+                }
+                
+                if (tiktokId) {
+                    isRedirectTask = false;
+                    timerPaused = false;
+                    
+                    setTimeout(() => {
+                        const oldScript = document.getElementById("tiktok-embed-script");
+                        if (oldScript) oldScript.remove();
+                        const script = document.createElement('script');
+                        script.id = "tiktok-embed-script";
+                        script.src = "https://www.tiktok.com/embed.js";
+                        script.async = true;
+                        document.body.appendChild(script);
+                    }, 50);
+
+                    return `
+                        <div class="absolute inset-0 w-full h-full flex items-center justify-center bg-black rounded-xl overflow-hidden">
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@${username}/video/${tiktokId}" data-video-id="${tiktokId}" style="width:100%; height:100%; margin:0;">
+                                <section class="text-white text-center p-4">Loading video...</section>
+                            </blockquote>
+                        </div>
+                    `;
+                } else {
+                    isRedirectTask = true;
+                    timerPaused = true;
                     return `
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-slate-950 rounded-xl select-none z-10">
                             <svg class="h-12 w-12 text-purple-500 mb-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -215,7 +246,7 @@
                             </svg>
                             <p class="text-sm font-bold text-white uppercase tracking-wider mb-2">Open Video Link</p>
                             <p class="text-[11px] text-slate-400 mb-4 max-w-[240px]">This video must be viewed directly. Click the button below to watch and keep this page open for your rewards.</p>
-                            <a href="${url}" target="_blank" class="bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-[11px] py-2.5 px-5 rounded-xl transition-all shadow-md transform active:scale-95 inline-block">
+                            <a href="${url}" target="_blank" onclick="resumeTimer()" class="bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-[11px] py-2.5 px-5 rounded-xl transition-all shadow-md transform active:scale-95 inline-block">
                                 Watch Video on TikTok ↗
                             </a>
                         </div>

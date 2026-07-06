@@ -180,16 +180,43 @@
                     `;
                 }
             } else if (type === 'tiktok') {
+                let username = 'pesaquash';
                 let tiktokId = '';
-                const tiktokRegExp = /\/video\/(\d+)/;
-                const match = url.match(tiktokRegExp);
-                if (match && match[1]) {
-                    tiktokId = match[1];
+                
+                const pathRegex = /@([^\/]+)\/video\/(\d+)/;
+                const pathMatch = url.match(pathRegex);
+                if (pathMatch) {
+                    username = pathMatch[1];
+                    tiktokId = pathMatch[2];
+                } else {
+                    const idRegex = /\/video\/(\d+)/;
+                    const idMatch = url.match(idRegex);
+                    if (idMatch) {
+                        tiktokId = idMatch[1];
+                    }
                 }
+                
                 if (tiktokId) {
                     isRedirectTask = false;
                     timerPaused = false;
-                    return `<iframe class="absolute inset-0 w-full h-full rounded-xl" src="https://www.tiktok.com/embed/v2/${tiktokId}" frameborder="0" allowfullscreen></iframe>`;
+                    
+                    setTimeout(() => {
+                        const oldScript = document.getElementById("tiktok-embed-script");
+                        if (oldScript) oldScript.remove();
+                        const script = document.createElement('script');
+                        script.id = "tiktok-embed-script";
+                        script.src = "https://www.tiktok.com/embed.js";
+                        script.async = true;
+                        document.body.appendChild(script);
+                    }, 50);
+
+                    return `
+                        <div class="absolute inset-0 w-full h-full flex items-center justify-center bg-black rounded-xl overflow-hidden">
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@${username}/video/${tiktokId}" data-video-id="${tiktokId}" style="width:100%; height:100%; margin:0;">
+                                <section class="text-white text-center p-4">Loading video...</section>
+                            </blockquote>
+                        </div>
+                    `;
                 } else {
                     isRedirectTask = true;
                     timerPaused = true;
