@@ -54,9 +54,12 @@ input, select, textarea {
     font-weight: 700 !important;
 }
 
-/* Base Body Style - Clean White */
+/* Base Body Style - Clean White with Organic Leaf Watermark Pattern */
 body {
     background-color: #ffffff !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'><g fill='none' stroke='rgba(37, 99, 235, 0.025)' stroke-width='1.5'><path d='M30,80 C30,40 70,30 80,10 C90,30 130,40 130,80 C130,120 90,130 80,150 C70,130 30,120 30,80 Z M80,10 C80,50 80,100 80,150'/><path d='M80,40 C70,35 55,40 50,45 M80,65 C70,60 55,65 50,70 M80,90 C70,85 55,90 50,95 M80,115 C70,110 55,115 50,120'/><path d='M80,40 C90,35 105,40 110,45 M80,65 C90,60 105,65 110,70 M80,90 C90,85 105,90 110,95 M80,115 C90,110 105,115 110,120'/><path d='M10,10 C25,5 35,20 30,35 C25,50 10,45 10,10 Z M10,10 C18,18 25,25 30,35' transform='rotate(25 20 20)'/><path d='M140,140 C155,135 165,150 160,165 C155,180 140,175 140,140 Z M140,140 C148,148 155,155 160,165' transform='rotate(-25 150 150)'/></g></svg>") !important;
+    background-repeat: repeat !important;
+    background-attachment: fixed !important;
     color: #0f2032 !important;
 }
 
