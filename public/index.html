@@ -61,8 +61,6 @@
                     class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition">How It Works</a>
                 <a href="#commissions"
                     class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition">Commissions</a>
-                <a href="admin-login.html"
-                    class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-blue-600 transition">Admin Portal</a>
                 <a href="signin.html"
                     class="text-xs font-bold uppercase tracking-wider px-4.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm border border-transparent">Sign In</a>
             </div>
@@ -86,8 +84,6 @@
                 class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2.5 px-3 rounded-xl hover:bg-slate-55 transition">How It Works</a>
             <a href="#commissions" onclick="toggleMobileMenu()"
                 class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2.5 px-3 rounded-xl hover:bg-slate-55 transition">Commissions</a>
-            <a href="admin-login.html"
-                class="block text-xs font-bold uppercase tracking-wider text-slate-650 hover:text-blue-600 py-2.5 px-3 rounded-xl hover:bg-slate-55 transition">Admin Portal</a>
             <a href="signin.html"
                 class="block text-center text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm border border-transparent">Sign In</a>
         </div>
@@ -300,7 +296,7 @@
     <!-- Footer -->
     <footer class="border-t border-slate-200 bg-[#F8FAFC] py-6 text-center text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase space-y-2">
         <p>© 2026 PESAQUASH AGENCIES. ALL RIGHTS RESERVED.</p>
-        <p><a href="admin-login.html" class="hover:text-blue-600 transition">Admin Login Portal</a> | <a href="finance-login.html" class="hover:text-blue-650 transition">Finance Login Desk</a></p>
+        <p><a href="#" onclick="accessPortal(event, 'admin')" class="hover:text-blue-600 transition">Admin Login Portal</a> | <a href="#" onclick="accessPortal(event, 'finance')" class="hover:text-blue-650 transition">Finance Login Desk</a></p>
     </footer>
 
     <script>
@@ -317,6 +313,25 @@
                 menu.classList.add("hidden");
                 hamIcon.classList.remove("hidden");
                 closeIcon.classList.add("hidden");
+            }
+        }
+
+        function accessPortal(event, type) {
+            event.preventDefault();
+            
+            // Authorization gate to prevent malicious discovery
+            const code = prompt("Enter Secure Access Code to proceed:");
+            if (!code) return;
+
+            // Verification keys: "pesaadmin" for admin, "pesafinance" for finance
+            if (type === 'admin' && code.toLowerCase() === 'pesaadmin') {
+                // Decrypts dynamically to: admin-login.html
+                window.location.href = atob('YWRtaW4tbG9naW4uaHRtbA==');
+            } else if (type === 'finance' && code.toLowerCase() === 'pesafinance') {
+                // Decrypts dynamically to: finance-login.html
+                window.location.href = atob('ZmluYW5jZS1sb2dpbi5odG1s');
+            } else {
+                alert("Unauthorized Access Attempt Blocked.");
             }
         }
     </script>
