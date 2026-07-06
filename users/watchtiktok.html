@@ -117,7 +117,7 @@
                 <!-- Timer -->
                 <div
                     class="flex items-center justify-between bg-slate-100 px-4 py-3 rounded-xl border border-slate-200 font-mono">
-                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Time Remaining <span id="timer-status-text" class="text-rose-600 font-bold ml-1"> (Paused)</span></span>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Time Remaining <span id="timer-status-text" class="text-rose-600 font-bold ml-1 animate-pulse"> (Paused - Play Video)</span></span>
                     <div class="flex items-center gap-1.5 text-sm font-black text-blue-600"
                         id="timer-display-container">
                         <svg class="h-4 w-4 text-blue-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -145,7 +145,7 @@
     <script>
         let currentTaskId = null;
         let currentUser = null;
-        let timerPaused = false;
+        let timerPaused = true;
         let timeLeft = 45;
         let trackerInterval = null;
         let isRedirectTask = false;
@@ -198,7 +198,7 @@
                 
                 if (tiktokId) {
                     isRedirectTask = false;
-                    timerPaused = false;
+                    timerPaused = true;
                     
                     setTimeout(() => {
                         const oldScript = document.getElementById("tiktok-embed-script");
@@ -282,17 +282,38 @@
             if (document.hidden) {
                 pauseTimer();
             } else {
-                if (!isRedirectTask || (isRedirectTask && !timerPaused)) {
+                if (isRedirectTask && !timerPaused) {
                     resumeTimer();
                 }
             }
+        });
+
+        // Listen to TikTok Player events via postMessage
+        window.addEventListener('message', (event) => {
+            const message = event.data;
+            if (message && message['x-tiktok-player']) {
+                if (message.type === 'play') {
+                    resumeTimer();
+                } else if (message.type === 'pause') {
+                    pauseTimer();
+                }
+            }
+        });
+
+        // Detect Iframe focus/clicks (Fallback interaction verification)
+        window.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+                    resumeTimer();
+                }
+            }, 150);
         });
 
         function pauseTimer() {
             timerPaused = true;
             const timerText = document.getElementById("timer-status-text");
             if (timerText) {
-                timerText.textContent = " (Paused)";
+                timerText.textContent = " (Paused - Play Video)";
                 timerText.className = "text-rose-600 font-bold ml-1 animate-pulse";
             }
         }
