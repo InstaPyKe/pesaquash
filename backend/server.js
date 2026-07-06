@@ -23,6 +23,9 @@ app.use('/api/users', userRoutes);
 const adminRoutes = require('./routes/adminRoutes');
 app.use('/api/admin', adminRoutes);
 
+const financeRoutes = require('./routes/financeRoutes');
+app.use('/api/finance', financeRoutes);
+
 // API Health Check Route
 app.get('/api/health', async (req, res) => {
   try {

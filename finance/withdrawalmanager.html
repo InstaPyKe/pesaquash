@@ -110,62 +110,8 @@
                             <th class="p-4 text-right">Pay Manually</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
-
-                        <tr class="bg-rose-50/10 hover:bg-rose-50/20 transition">
-                            <td class="p-4 font-bold text-rose-600">42 mins ago</td>
-                            <td class="p-4 text-slate-900 font-bold">0712***678</td>
-                            <td class="p-4 text-slate-500">M-Pesa</td>
-                            <td class="p-4 font-black text-slate-900">KES 1,200.00</td>
-                            <td class="p-4 text-center">
-                                <button onclick="triggerB2CAPI('0712***678', '1,200.00')"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
-                                    Send via M-Pesa
-                                </button>
-                            </td>
-                            <td class="p-4 text-right">
-                                <button onclick="logManualSettle('0712***678', '1,200.00')"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
-                                    Mark as Paid
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr class="hover:bg-slate-50/50 transition">
-                            <td class="p-4 text-slate-500">18 mins ago</td>
-                            <td class="p-4 text-slate-900 font-bold">0759***332</td>
-                            <td class="p-4 text-slate-500">M-Pesa</td>
-                            <td class="p-4 font-black text-slate-900">KES 350.00</td>
-                            <td class="p-4 text-center">
-                                <button onclick="triggerB2CAPI('0759***332', '350.00')"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
-                                    Send via M-Pesa
-                                </button>
-                            </td>
-                            <td class="p-4 text-right">
-                                <button onclick="logManualSettle('0759***332', '350.00')"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
-                                    Mark as Paid
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr class="hover:bg-slate-50/50 transition">
-                            <td class="p-4 text-slate-400">5 mins ago</td>
-                            <td class="p-4 text-slate-900 font-bold">0114***951</td>
-                            <td class="p-4 text-slate-500">Airtel Money</td>
-                            <td class="p-4 font-black text-slate-900">KES 75.00</td>
-                            <td class="p-4 text-center">
-                                <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded">Airtel Money Offline</span>
-                            </td>
-                            <td class="p-4 text-right">
-                                <button onclick="logManualSettle('0114***951', '75.00')"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
-                                    Mark as Paid
-                                </button>
-                            </td>
-                        </tr>
-
+                    <tbody id="pending-withdrawals-tbody" class="divide-y divide-slate-100">
+                        <tr><td colspan="6" class="p-4 text-center text-slate-400 font-bold italic">Loading pending withdrawals...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -187,23 +133,8 @@
                                 <th class="p-4 text-right">Status</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <tr class="hover:bg-slate-50/50 transition">
-                                <td class="p-4 text-slate-400">Jul 03, 16:30</td>
-                                <td class="p-4 text-slate-950 font-bold">0798***881</td>
-                                <td class="p-4 text-slate-500">M-Pesa</td>
-                                <td class="p-4 font-black text-slate-950">KES 800.00</td>
-                                <td class="p-4">RGK18PLM9X</td>
-                                <td class="p-4 text-right"><span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">Completed</span></td>
-                            </tr>
-                            <tr class="hover:bg-slate-50/50 transition">
-                                <td class="p-4 text-slate-400">Jul 03, 14:15</td>
-                                <td class="p-4 text-slate-950 font-bold">0112***304</td>
-                                <td class="p-4 text-slate-500">M-Pesa</td>
-                                <td class="p-4 font-black text-slate-950">KES 500.00</td>
-                                <td class="p-4">RGA77XCV3A</td>
-                                <td class="p-4 text-right"><span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">Completed</span></td>
-                            </tr>
+                        <tbody id="completed-withdrawals-tbody" class="divide-y divide-slate-100">
+                            <tr><td colspan="6" class="p-4 text-center text-slate-400 font-bold italic">Loading completed withdrawals...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -213,33 +144,157 @@
     </main>
 
     <script>
-        async function triggerB2CAPI(user, amount) {
-            const check = await showSystemConfirm(`Are you sure you want to send KES ${amount} to ${user} automatically via M-Pesa?`);
-            if (check) {
-                alert("M-Pesa payment sent successfully.");
-                window.location.reload();
+        document.addEventListener("DOMContentLoaded", async function() {
+            const loggedInFinanceStr = localStorage.getItem("logged_in_finance");
+            if (!loggedInFinanceStr) {
+                window.location.href = "../finance-login.html";
+                return;
+            }
+
+            await loadWithdrawals();
+        });
+
+        async function loadWithdrawals() {
+            try {
+                const response = await fetch('/api/finance/withdrawals');
+                const data = await response.json();
+
+                if (data.success) {
+                    const pendingTbody = document.getElementById("pending-withdrawals-tbody");
+                    const completedTbody = document.getElementById("completed-withdrawals-tbody");
+
+                    pendingTbody.innerHTML = "";
+                    completedTbody.innerHTML = "";
+
+                    const pendingItems = data.withdrawals.filter(w => w.status === 'Pending');
+                    const completedItems = data.withdrawals.filter(w => w.status === 'Completed' || w.status === 'Completed (Auto)');
+
+                    if (pendingItems.length === 0) {
+                        pendingTbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">No pending withdrawal requests in the queue.</td></tr>`;
+                    } else {
+                        pendingItems.forEach(item => {
+                            const dateStr = new Date(item.created_at).toLocaleString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: false
+                            });
+
+                            const tr = document.createElement("tr");
+                            tr.className = "bg-rose-50/10 hover:bg-rose-50/20 transition";
+                            tr.innerHTML = `
+                                <td class="p-4 font-bold text-rose-600">${dateStr}</td>
+                                <td class="p-4 text-slate-900 font-bold">${item.phone_number}</td>
+                                <td class="p-4 text-slate-500">${item.channel}</td>
+                                <td class="p-4 font-black text-slate-900">KES ${parseFloat(item.amount).toFixed(2)}</td>
+                                <td class="p-4 text-center">
+                                    <button onclick="triggerB2CAPI('${item.id}', '${item.phone_number}', '${parseFloat(item.amount).toFixed(2)}')"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
+                                        Send via M-Pesa
+                                    </button>
+                                </td>
+                                <td class="p-4 text-right">
+                                    <button onclick="logManualSettle('${item.id}', '${item.phone_number}', '${parseFloat(item.amount).toFixed(2)}')"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
+                                        Mark as Paid
+                                    </button>
+                                </td>
+                            `;
+                            pendingTbody.appendChild(tr);
+                        });
+                    }
+
+                    if (completedItems.length === 0) {
+                        completedTbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">No completed payouts history found.</td></tr>`;
+                    } else {
+                        completedItems.forEach(item => {
+                            const dateStr = new Date(item.created_at).toLocaleString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: false
+                            });
+
+                            const tr = document.createElement("tr");
+                            tr.className = "hover:bg-slate-50/50 transition";
+                            tr.innerHTML = `
+                                <td class="p-4 text-slate-400">${dateStr}</td>
+                                <td class="p-4 text-slate-955 font-bold">${item.phone_number}</td>
+                                <td class="p-4 text-slate-500">${item.channel}</td>
+                                <td class="p-4 font-black text-slate-955 font-mono">KES ${parseFloat(item.amount).toFixed(2)}</td>
+                                <td class="p-4">${item.transaction_code || 'N/A'}</td>
+                                <td class="p-4 text-right">
+                                    <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">Completed</span>
+                                </td>
+                            `;
+                            completedTbody.appendChild(tr);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load withdrawals ledger:", error);
             }
         }
 
-        function logManualSettle(user, amount) {
+        async function triggerB2CAPI(withdrawalId, user, amount) {
+            const check = await showSystemConfirm(`Are you sure you want to send KES ${amount} to ${user} automatically via M-Pesa?`);
+            if (check) {
+                try {
+                    const response = await fetch('/api/finance/withdrawals/approve', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ withdrawalId })
+                    });
+                    const resData = await response.json();
+
+                    if (response.ok) {
+                        alert(`M-Pesa payment sent successfully. Transaction code: ${resData.transactionCode}`);
+                        window.location.reload();
+                    } else {
+                        alert(resData.message || resData.error || "Payment failed.");
+                    }
+                } catch (error) {
+                    console.error("M-Pesa API error:", error);
+                    alert("Network error: Could not trigger payout.");
+                }
+            }
+        }
+
+        async function logManualSettle(withdrawalId, user, amount) {
             const referenceInput = prompt(`Mark as Paid Manually:\n\nEnter the M-Pesa transaction code (e.g. RGK93M2X71) to remove this request from the queue:`);
 
             if (referenceInput === null) return;
 
             if (referenceInput.trim() === "") {
                 alert("You must enter a valid transaction code.");
-            } else {
-                alert(`Payment marked as paid under transaction code ${referenceInput.toUpperCase()}.`);
-                window.location.reload();
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/finance/withdrawals/approve', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ withdrawalId, transactionCode: referenceInput.trim().toUpperCase() })
+                });
+                const resData = await response.json();
+
+                if (response.ok) {
+                    alert(`Payment marked as paid under transaction code ${referenceInput.toUpperCase()}.`);
+                    window.location.reload();
+                } else {
+                    alert(resData.message || resData.error || "Settle failed.");
+                }
+            } catch (error) {
+                console.error("Manual settle error:", error);
+                alert("Network error: Could not mark as paid.");
             }
         }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const loggedInFinanceStr = localStorage.getItem("logged_in_finance");
-            if (!loggedInFinanceStr) {
-                window.location.href = "../finance-login.html";
-            }
-        });
 
         function handleFinanceLogout() {
             localStorage.removeItem("logged_in_finance");

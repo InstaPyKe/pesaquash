@@ -85,14 +85,12 @@
                 <input type="text" id="ledger-search" placeholder="Search transaction code..."
                     class="bg-white border border-slate-200 text-xs font-mono text-slate-700 px-3.5 py-2 rounded-xl focus:outline-none focus:border-blue-500 transition-all font-semibold">
             </div>
-        </div>
-
-        <!-- Quick Summary Bar -->
+        </di        <!-- Quick Summary Bar -->
         <div
             class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200 font-mono text-xs">
             <div>
-                <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Auto-Approved Payments</span>
-                <span class="font-black text-emerald-600 block mt-0.5 text-sm">98.4%</span>
+                <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Approved Payments</span>
+                <span id="approved-count" class="font-black text-emerald-600 block mt-0.5 text-sm">0 Payments</span>
             </div>
             <div>
                 <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Cost per Activation</span>
@@ -100,7 +98,7 @@
             </div>
             <div>
                 <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">Pending Manual Approvals</span>
-                <span class="font-black text-amber-600 block mt-0.5 text-sm">1 Payment</span>
+                <span id="pending-count" class="font-black text-amber-600 block mt-0.5 text-sm">0 Payments</span>
             </div>
         </div>
 
@@ -124,56 +122,8 @@
                             <th class="p-4 text-right">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
-
-                        <!-- Row 1: Dropped webhook transaction requiring manual resolve -->
-                        <tr class="bg-amber-50/10 hover:bg-amber-50/20 transition">
-                            <td class="p-4 text-slate-500">Jul 03, 18:24</td>
-                            <td class="p-4 font-bold text-slate-900">0725***114</td>
-                            <td class="p-4 text-amber-700 font-black">RGD49MXZ2K</td>
-                            <td class="p-4 font-bold">KES 500.00</td>
-                            <td class="p-4">
-                                <span
-                                    class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-100">Timeout / Pending</span>
-                            </td>
-                            <td class="p-4 text-right">
-                                <button onclick="overrideActivation('RGD49MXZ2K', '0725***114')"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
-                                    Approve Payment
-                                </button>
-                            </td>
-                        </tr>
-
-                        <!-- Row 2: Standard automated settle item -->
-                        <tr class="hover:bg-slate-50/50 transition">
-                            <td class="p-4 text-slate-450">Jul 03, 17:51</td>
-                            <td class="p-4 text-slate-600">0798***881</td>
-                            <td class="p-4 text-slate-700">RGC18PLM9X</td>
-                            <td class="p-4 font-bold">KES 500.00</td>
-                            <td class="p-4">
-                                <span
-                                    class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">Approved (Auto)</span>
-                            </td>
-                            <td class="p-4 text-right">
-                                <span class="text-[10px] text-slate-400 italic">Approved by System</span>
-                            </td>
-                        </tr>
-
-                        <!-- Row 3: Standard automated settle item -->
-                        <tr class="hover:bg-slate-50/50 transition">
-                            <td class="p-4 text-slate-450">Jul 03, 16:12</td>
-                            <td class="p-4 text-slate-600">0112***304</td>
-                            <td class="p-4 text-slate-700">RGB77XCV3A</td>
-                            <td class="p-4 font-bold">KES 500.00</td>
-                            <td class="p-4">
-                                <span
-                                    class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">Approved (Auto)</span>
-                            </td>
-                            <td class="p-4 text-right">
-                                <span class="text-[10px] text-slate-400 italic">Approved by System</span>
-                            </td>
-                        </tr>
-
+                    <tbody id="activations-tbody" class="divide-y divide-slate-100">
+                        <tr><td colspan="6" class="p-4 text-center text-slate-400 font-bold italic">Loading activations...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -181,21 +131,128 @@
     </main>
 
     <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const loggedInFinanceStr = localStorage.getItem("logged_in_finance");
+            if (!loggedInFinanceStr) {
+                window.location.href = "../finance-login.html";
+                return;
+            }
+
+            await loadActivations();
+
+            // Search Filter
+            document.getElementById("ledger-search").addEventListener("input", function(e) {
+                const query = e.target.value.toLowerCase().trim();
+                const rows = document.querySelectorAll("#activations-tbody tr");
+                rows.forEach(row => {
+                    const trxCell = row.querySelector(".trx-code-cell");
+                    if (trxCell) {
+                        const text = trxCell.textContent.toLowerCase();
+                        if (text.includes(query) || query === "") {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    }
+                });
+            });
+        });
+
+        async function loadActivations() {
+            try {
+                const response = await fetch('/api/finance/activations');
+                const data = await response.json();
+
+                if (data.success) {
+                    const tbody = document.getElementById("activations-tbody");
+                    tbody.innerHTML = "";
+
+                    let approved = 0;
+                    let pending = 0;
+
+                    if (data.activations.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 italic">No activation attempts found in the database.</td></tr>`;
+                        return;
+                    }
+
+                    data.activations.forEach(item => {
+                        if (item.status === 'Approved') approved++;
+                        if (item.status === 'Pending') pending++;
+
+                        const dateStr = new Date(item.created_at).toLocaleString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false
+                        });
+
+                        let statusBadge = '';
+                        let actionHtml = '';
+
+                        if (item.status === 'Approved') {
+                            statusBadge = `<span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">Approved (Auto)</span>`;
+                            actionHtml = `<span class="text-[10px] text-slate-400 italic">Approved by System</span>`;
+                        } else if (item.status === 'Pending') {
+                            statusBadge = `<span class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded text-[10px] font-bold border border-amber-100">Timeout / Pending</span>`;
+                            actionHtml = `
+                                <button onclick="overrideActivation('${item.transaction_code}', '${item.phone_number}')"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-xl cursor-pointer transition-all active:scale-[0.98]">
+                                    Approve Payment
+                                </button>
+                            `;
+                        } else {
+                            statusBadge = `<span class="text-rose-700 bg-rose-50 px-2 py-0.5 rounded text-[10px] font-bold border border-rose-100">${item.status}</span>`;
+                            actionHtml = `<span class="text-[10px] text-rose-500 italic">Failed</span>`;
+                        }
+
+                        const tr = document.createElement("tr");
+                        tr.className = item.status === 'Pending' ? "bg-amber-50/10 hover:bg-amber-50/20 transition" : "hover:bg-slate-50/50 transition";
+                        tr.innerHTML = `
+                            <td class="p-4 text-slate-500">${dateStr}</td>
+                            <td class="p-4 font-bold text-slate-900">${item.phone_number}</td>
+                            <td class="p-4 text-slate-700 font-bold trx-code-cell">${item.transaction_code}</td>
+                            <td class="p-4 font-bold">KES ${parseFloat(item.amount).toFixed(2)}</td>
+                            <td class="p-4">${statusBadge}</td>
+                            <td class="p-4 text-right">${actionHtml}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+
+                    document.getElementById("approved-count").textContent = `${approved} Payment${approved === 1 ? '' : 's'}`;
+                    document.getElementById("pending-count").textContent = `${pending} Payment${pending === 1 ? '' : 's'}`;
+                }
+            } catch (error) {
+                console.error("Failed to load activations:", error);
+            }
+        }
+
         async function overrideActivation(trxCode, userEndpoint) {
             const doubleCheck = await showSystemConfirm(`Are you sure you want to approve transaction ${trxCode} for ${userEndpoint} manually? This will activate their account.`);
 
             if (doubleCheck) {
-                alert(`Transaction ${trxCode} approved. The user account is now active.`);
-                window.location.reload();
+                try {
+                    const response = await fetch('/api/finance/activations/override', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ transactionCode: trxCode })
+                    });
+                    const resData = await response.json();
+
+                    if (response.ok) {
+                        alert(`Transaction ${trxCode} approved. The user account is now active.`);
+                        window.location.reload();
+                    } else {
+                        alert(resData.message || resData.error || "Approval failed.");
+                    }
+                } catch (error) {
+                    console.error("Override activation failed:", error);
+                    alert("Network error: Could not complete approval.");
+                }
             }
         }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const loggedInFinanceStr = localStorage.getItem("logged_in_finance");
-            if (!loggedInFinanceStr) {
-                window.location.href = "../finance-login.html";
-            }
-        });
 
         function handleFinanceLogout() {
             localStorage.removeItem("logged_in_finance");
