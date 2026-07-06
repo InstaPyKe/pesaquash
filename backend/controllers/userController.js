@@ -175,7 +175,7 @@ exports.spinWheel = async (req, res) => {
 
     // 2. Check if user already spun today
     const spinCheck = await db.query(
-      `SELECT id FROM user_tasks ut 
+      `SELECT ut.id FROM user_tasks ut 
        JOIN tasks t ON ut.task_id = t.id 
        WHERE ut.user_id = $1 AND t.type = 'spin' AND ut.created_at::date = CURRENT_DATE`,
       [userId]
