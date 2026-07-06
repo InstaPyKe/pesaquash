@@ -6,6 +6,54 @@ body, h1, h2, h3, h4, h5, h6 {
     font-family: 'Onest', 'Plus Jakarta Sans', sans-serif !important;
 }
 
+/* Override Monospace font-family to Onest Sans */
+.font-mono {
+    font-family: 'Onest', 'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* Normalize uppercase and letter spacing for smooth look */
+.uppercase {
+    text-transform: none !important;
+    letter-spacing: normal !important;
+}
+
+/* Ensure typography is smooth, bold, and larger */
+.font-semibold, .font-medium {
+    font-weight: 700 !important;
+}
+.font-bold, .font-extrabold, .font-black {
+    font-weight: 850 !important;
+}
+
+/* Big size font overrides */
+.text-\[9px\], .text-\[10px\], .text-xs {
+    font-size: 14px !important;
+}
+.text-sm {
+    font-size: 16px !important;
+}
+.text-base {
+    font-size: 18px !important;
+}
+.text-lg {
+    font-size: 21px !important;
+}
+.text-xl {
+    font-size: 24px !important;
+}
+.text-2xl {
+    font-size: 28px !important;
+}
+.text-3xl {
+    font-size: 36px !important;
+}
+
+/* Ensure inputs, select boxes, and textareas are bold and large */
+input, select, textarea {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+}
+
 /* Base Body Style - Clean White */
 body {
     background-color: #ffffff !important;
