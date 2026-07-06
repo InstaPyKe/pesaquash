@@ -117,8 +117,9 @@
                 <!-- Timer -->
                 <div
                     class="flex items-center justify-between bg-slate-100 px-4 py-3 rounded-xl border border-slate-200 font-mono">
-                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Time Remaining</span>
-                    <div class="flex items-center gap-1.5 text-sm font-black text-blue-600">
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Time Remaining <span id="timer-status-text" class="text-rose-600 font-bold ml-1"> (Paused)</span></span>
+                    <div class="flex items-center gap-1.5 text-sm font-black text-blue-600"
+                        id="timer-display-container">
                         <svg class="h-4 w-4 text-blue-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -144,6 +145,10 @@
     <script>
         let currentTaskId = null;
         let currentUser = null;
+        let timerPaused = false;
+        let timeLeft = 45;
+        let trackerInterval = null;
+        let isRedirectTask = false;
 
         function getVideoEmbedHtml(url, type) {
             if (!url) return '';
@@ -155,8 +160,12 @@
                     videoId = match[2].trim();
                 }
                 if (videoId && videoId.length === 11) {
+                    isRedirectTask = false;
+                    timerPaused = false;
                     return `<iframe class="absolute inset-0 w-full h-full rounded-xl" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
                 } else {
+                    isRedirectTask = true;
+                    timerPaused = true;
                     return `
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-slate-950 rounded-xl select-none z-10">
                             <svg class="h-12 w-12 text-blue-500 mb-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -164,7 +173,7 @@
                             </svg>
                             <p class="text-sm font-bold text-white uppercase tracking-wider mb-2">Open Video Link</p>
                             <p class="text-[11px] text-slate-400 mb-4 max-w-[240px]">This video must be viewed directly. Click the button below to watch and keep this page open for your rewards.</p>
-                            <a href="${url}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[11px] py-2.5 px-5 rounded-xl transition-all shadow-md transform active:scale-95 inline-block">
+                            <a href="${url}" target="_blank" onclick="resumeTimer()" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[11px] py-2.5 px-5 rounded-xl transition-all shadow-md transform active:scale-95 inline-block">
                                 Watch Video on YouTube ↗
                             </a>
                         </div>
@@ -178,8 +187,12 @@
                     tiktokId = match[1];
                 }
                 if (tiktokId) {
+                    isRedirectTask = false;
+                    timerPaused = false;
                     return `<iframe class="absolute inset-0 w-full h-full rounded-xl" src="https://www.tiktok.com/embed/v2/${tiktokId}" frameborder="0" allowfullscreen></iframe>`;
                 } else {
+                    isRedirectTask = true;
+                    timerPaused = true;
                     return `
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-slate-950 rounded-xl select-none z-10">
                             <svg class="h-12 w-12 text-purple-500 mb-4 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -187,7 +200,7 @@
                             </svg>
                             <p class="text-sm font-bold text-white uppercase tracking-wider mb-2">Open Video Link</p>
                             <p class="text-[11px] text-slate-400 mb-4 max-w-[240px]">This video must be viewed directly. Click the button below to watch and keep this page open for your rewards.</p>
-                            <a href="${url}" target="_blank" class="bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-[11px] py-2.5 px-5 rounded-xl transition-all shadow-md transform active:scale-95 inline-block">
+                            <a href="${url}" target="_blank" onclick="resumeTimer()" class="bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-[11px] py-2.5 px-5 rounded-xl transition-all shadow-md transform active:scale-95 inline-block">
                                 Watch Video on TikTok ↗
                             </a>
                         </div>
@@ -209,17 +222,21 @@
                 const response = await fetch(`/api/users/tasks?userId=${currentUser.id}&type=tiktok`);
                 const data = await response.json();
                 if (data.success && data.tasks.length > 0) {
-                    const task = data.tasks[0]; // Get the latest task
+                    const task = data.tasks[0];
                     currentTaskId = task.id;
 
-                    // Update UI with task info
                     document.querySelector("h1").innerText = task.title;
                     document.getElementById("claim-btn").innerText = `Claim KES ${parseFloat(task.reward).toFixed(2)} Reward (Locked)`;
                     
-                    // Embed TikTok video player
                     const playerContainer = document.getElementById("video-player-container");
                     if (playerContainer) {
                         playerContainer.innerHTML = getVideoEmbedHtml(task.url_or_question, 'tiktok');
+                    }
+                    
+                    if (timerPaused) {
+                        pauseTimer();
+                    } else {
+                        resumeTimer();
                     }
                     
                     startTimer(task.reward);
@@ -233,20 +250,53 @@
             }
         });
 
+        // Tab focus detection
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                pauseTimer();
+            } else {
+                if (!isRedirectTask || (isRedirectTask && !timerPaused)) {
+                    resumeTimer();
+                }
+            }
+        });
+
+        function pauseTimer() {
+            timerPaused = true;
+            const timerText = document.getElementById("timer-status-text");
+            if (timerText) {
+                timerText.textContent = " (Paused)";
+                timerText.className = "text-rose-600 font-bold ml-1 animate-pulse";
+            }
+        }
+
+        function resumeTimer() {
+            timerPaused = false;
+            const timerText = document.getElementById("timer-status-text");
+            if (timerText) {
+                timerText.textContent = " (Active)";
+                timerText.className = "text-emerald-600 font-bold ml-1";
+            }
+        }
+
         function startTimer(reward) {
-            let timeLeft = 45;
+            timeLeft = 45;
             const timerElement = document.getElementById("countdown-timer");
             const claimButton = document.getElementById("claim-btn");
 
-            const trackerInterval = setInterval(() => {
+            trackerInterval = setInterval(() => {
+                if (timerPaused) return;
+
                 timeLeft--;
                 timerElement.innerText = timeLeft;
 
                 if (timeLeft <= 0) {
                     clearInterval(trackerInterval);
+                    trackerInterval = null;
 
                     document.getElementById("timer-display-container").innerHTML = "✅ Verified";
-                    document.getElementById("timer-display-container").classList.replace("text-purple-650", "text-blue-600");
+                    const statusText = document.getElementById("timer-status-text");
+                    if (statusText) statusText.style.display = "none";
 
                     claimButton.removeAttribute("disabled");
                     claimButton.innerText = `Claim KES ${parseFloat(reward).toFixed(2)} Reward`;
