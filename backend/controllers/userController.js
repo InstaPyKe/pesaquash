@@ -77,6 +77,8 @@ exports.getDashboardStats = async (req, res) => {
       isActive: user.is_active,
       walletBalance: parseFloat(user.wallet_balance),
       totalEarnings,
+      tasksWallet: totalTasks,
+      referralsWallet: totalCommissions,
       completedToday,
       recentActivities: activityQuery.rows
     });

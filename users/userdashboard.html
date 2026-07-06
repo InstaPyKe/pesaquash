@@ -75,8 +75,11 @@
                     const walletEl = document.getElementById("wallet-balance");
                     walletEl.setAttribute("data-currency-kes", data.walletBalance);
                     
-                    const totalEl = document.getElementById("total-earnings");
-                    totalEl.setAttribute("data-currency-kes", data.totalEarnings);
+                    const tasksEl = document.getElementById("tasks-balance");
+                    tasksEl.setAttribute("data-currency-kes", data.tasksWallet);
+                    
+                    const referralsEl = document.getElementById("referrals-balance");
+                    referralsEl.setAttribute("data-currency-kes", data.referralsWallet);
                     
                     const completedTasks = data.completedToday;
                     document.getElementById("daily-progress-text").textContent = `${completedTasks} / 8`;
@@ -234,7 +237,7 @@
         </div>
 
         <!-- Earnings Summary Card Grid -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- Card 1: Available Balance -->
             <div class="glass-card bg-blue-50/80 p-6 rounded-2xl border-l-4 border-l-blue-500 shadow-xs border border-blue-100">
                 <div
@@ -248,25 +251,38 @@
                 <p class="mt-2 text-[10px] text-slate-500 font-mono">Ready to withdraw to M-Pesa instantly.</p>
             </div>
 
-            <!-- Card 2: Total Earnings -->
-            <div class="glass-card bg-slate-100 p-6 rounded-2xl border-l-4 border-l-amber-500 shadow-xs border border-slate-200">
-                <div
-                    class="flex items-center justify-between text-[11px] font-mono font-bold tracking-wider text-slate-500 uppercase">
-                    <span>Total Earnings</span>
-                    <span class="text-amber-600 font-bold">Lifetime</span>
-                </div>
-                <div class="mt-4 flex items-baseline space-x-1">
-                    <span id="total-earnings" class="text-3xl font-black tracking-tight text-slate-900" data-currency-kes="0.00">KES 0.00</span>
-                </div>
-                <p class="mt-2 text-[10px] text-slate-500 font-mono">Includes tasks and invite commissions.</p>
-            </div>
-
-            <!-- Card 3: Daily Progress -->
+            <!-- Card 2: Tasks Wallet -->
             <div class="glass-card bg-purple-50/80 p-6 rounded-2xl border-l-4 border-l-purple-500 shadow-xs border border-purple-100">
                 <div
                     class="flex items-center justify-between text-[11px] font-mono font-bold tracking-wider text-slate-500 uppercase">
-                    <span>Daily Progress</span>
+                    <span>Tasks Wallet</span>
                     <span class="text-purple-600 font-bold">Tasks</span>
+                </div>
+                <div class="mt-4 flex items-baseline space-x-1">
+                    <span id="tasks-balance" class="text-3xl font-black tracking-tight text-slate-900" data-currency-kes="0.00">KES 0.00</span>
+                </div>
+                <p class="mt-2 text-[10px] text-slate-500 font-mono">Earnings from completing daily tasks.</p>
+            </div>
+
+            <!-- Card 3: Referral Wallet -->
+            <div class="glass-card bg-amber-50/80 p-6 rounded-2xl border-l-4 border-l-amber-500 shadow-xs border border-amber-100">
+                <div
+                    class="flex items-center justify-between text-[11px] font-mono font-bold tracking-wider text-slate-500 uppercase">
+                    <span>Referrals Wallet</span>
+                    <span class="text-amber-600 font-bold">Referrals</span>
+                </div>
+                <div class="mt-4 flex items-baseline space-x-1">
+                    <span id="referrals-balance" class="text-3xl font-black tracking-tight text-slate-900" data-currency-kes="0.00">KES 0.00</span>
+                </div>
+                <p class="mt-2 text-[10px] text-slate-500 font-mono">Passive referral network commissions.</p>
+            </div>
+
+            <!-- Card 4: Daily Progress -->
+            <div class="glass-card bg-emerald-50/80 p-6 rounded-2xl border-l-4 border-l-emerald-500 shadow-xs border border-emerald-100">
+                <div
+                    class="flex items-center justify-between text-[11px] font-mono font-bold tracking-wider text-slate-500 uppercase">
+                    <span>Daily Progress</span>
+                    <span class="text-emerald-600 font-bold">Progress</span>
                 </div>
                 <div class="mt-4 flex items-baseline space-x-1">
                     <span id="daily-progress-text" class="text-3xl font-black tracking-tight text-slate-900">0 / 8</span>
@@ -274,7 +290,7 @@
                 </div>
                 <!-- Mini Progress Bar -->
                 <div class="w-full bg-slate-200 h-2 rounded-full mt-3 overflow-hidden">
-                    <div id="daily-progress-bar" class="bg-indigo-500 h-full rounded-full" style="width: 0%;"></div>
+                    <div id="daily-progress-bar" class="bg-emerald-500 h-full rounded-full" style="width: 0%;"></div>
                 </div>
             </div>
         </section>
