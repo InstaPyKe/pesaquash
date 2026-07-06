@@ -112,7 +112,7 @@ ON CONFLICT (key) DO NOTHING;
 -- Insert Sample Tasks for Verification
 INSERT INTO tasks (type, title, url_or_question, reward) VALUES
 ('tiktok', 'Watch TikTok & Earn 15 KES', 'https://tiktok.com/@pesaquash/video/1', 15.00),
-('youtube', 'Watch YouTube Video Tutorial', 'https://youtube.com/watch?v=pesaquash', 12.00)
+('youtube', 'Watch YouTube Video Tutorial', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 12.00)
 ON CONFLICT DO NOTHING;
 
 INSERT INTO tasks (type, title, url_or_question, options, correct_answer, reward) VALUES
