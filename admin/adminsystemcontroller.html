@@ -86,10 +86,8 @@
         </div>
 
         <form onsubmit="saveSystemSettings(event)" class="space-y-6">
-
-            <!-- Card 1: Maintenance Mode & Accessibility Lock -->
             <div class="glass-card bg-slate-50 rounded-2xl shadow-xs p-6 border border-slate-200 space-y-4">
-                <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-505">// System Accessibility & Lock Controls</h2>
+                <h2 class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">// System Accessibility & Lock Controls</h2>
                 
                 <!-- Toggle 1: Global Maintenance Mode -->
                 <div class="flex items-center justify-between bg-white p-4 rounded-xl border border-slate-200">
@@ -136,7 +134,7 @@
                     <div>
                         <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">Level 1 (Direct)</label>
                         <div class="relative">
-                            <input type="number" required min="0" max="100" value="50" id="commission-l1"
+                            <input type="number" required min="0" max="100" value="50" id="commission-l1" oninput="updateCommissionPreview()"
                                 class="w-full bg-white border border-slate-200 text-xs font-mono px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all pr-8 font-semibold text-slate-800">
                             <span class="absolute inset-y-0 right-3 flex items-center text-xs text-slate-450 font-bold">%</span>
                         </div>
@@ -144,7 +142,7 @@
                     <div>
                         <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">Level 2 (Indirect)</label>
                         <div class="relative">
-                            <input type="number" required min="0" max="100" value="20" id="commission-l2"
+                            <input type="number" required min="0" max="100" value="20" id="commission-l2" oninput="updateCommissionPreview()"
                                 class="w-full bg-white border border-slate-200 text-xs font-mono px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all pr-8 font-semibold text-slate-800">
                             <span class="absolute inset-y-0 right-3 flex items-center text-xs text-slate-450 font-bold">%</span>
                         </div>
@@ -152,9 +150,32 @@
                     <div>
                         <label class="block text-[10px] font-mono font-bold tracking-wider text-slate-500 uppercase mb-1">Level 3 (Indirect)</label>
                         <div class="relative">
-                            <input type="number" required min="0" max="100" value="10" id="commission-l3"
+                            <input type="number" required min="0" max="100" value="10" id="commission-l3" oninput="updateCommissionPreview()"
                                 class="w-full bg-white border border-slate-200 text-xs font-mono px-3.5 py-2.5 rounded-xl focus:outline-none focus:border-blue-500 transition-all pr-8 font-semibold text-slate-800">
                             <span class="absolute inset-y-0 right-3 flex items-center text-xs text-slate-450 font-bold">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Earnings Distribution Calculator -->
+                <div class="p-4 rounded-xl bg-blue-100/30 border border-blue-200/50 space-y-2">
+                    <h4 class="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-600">Live Payout Preview (Based on KES 500 Activation)</h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono font-semibold">
+                        <div class="bg-white/80 p-2.5 rounded-lg border border-blue-100/50">
+                            <span class="text-[9px] text-slate-400 block uppercase font-bold">Level 1 Payout</span>
+                            <span class="text-slate-900 block mt-0.5 font-bold" id="preview-l1">KES 250.00 (50%)</span>
+                        </div>
+                        <div class="bg-white/80 p-2.5 rounded-lg border border-blue-100/50">
+                            <span class="text-[9px] text-slate-400 block uppercase font-bold">Level 2 Payout</span>
+                            <span class="text-slate-900 block mt-0.5 font-bold" id="preview-l2">KES 100.00 (20%)</span>
+                        </div>
+                        <div class="bg-white/80 p-2.5 rounded-lg border border-blue-100/50">
+                            <span class="text-[9px] text-slate-400 block uppercase font-bold">Level 3 Payout</span>
+                            <span class="text-slate-900 block mt-0.5 font-bold" id="preview-l3">KES 50.00 (10%)</span>
+                        </div>
+                        <div class="bg-white/80 p-2.5 rounded-lg border border-blue-100/50" id="margin-container">
+                            <span class="text-[9px] text-slate-400 block uppercase font-bold" id="margin-title">Net Margin</span>
+                            <span class="text-emerald-600 font-bold block mt-0.5" id="preview-margin">KES 100.00 (20%)</span>
                         </div>
                     </div>
                 </div>
@@ -212,11 +233,49 @@
                     document.getElementById("commission-l3").value = s.commission_l3 || "10";
                     document.getElementById("min-withdrawal").value = s.min_withdrawal || "50";
                     document.getElementById("daily-task-limit").value = s.daily_task_limit || "8";
+                    
+                    updateCommissionPreview();
                 }
             } catch (error) {
                 console.error("Failed to load settings:", error);
             }
         });
+
+        function updateCommissionPreview() {
+            const l1 = parseFloat(document.getElementById("commission-l1").value) || 0;
+            const l2 = parseFloat(document.getElementById("commission-l2").value) || 0;
+            const l3 = parseFloat(document.getElementById("commission-l3").value) || 0;
+
+            const fee = 500;
+            const p1 = (fee * l1) / 100;
+            const p2 = (fee * l2) / 100;
+            const p3 = (fee * l3) / 100;
+            const totalCommissions = l1 + l2 + l3;
+            const netMarginPercent = 100 - totalCommissions;
+            const netMarginAmount = (fee * netMarginPercent) / 100;
+
+            document.getElementById("preview-l1").textContent = `KES ${p1.toFixed(2)} (${l1}%)`;
+            document.getElementById("preview-l2").textContent = `KES ${p2.toFixed(2)} (${l2}%)`;
+            document.getElementById("preview-l3").textContent = `KES ${p3.toFixed(2)} (${l3}%)`;
+
+            const marginVal = document.getElementById("preview-margin");
+            const marginBox = document.getElementById("margin-container");
+            const marginTitle = document.getElementById("margin-title");
+
+            marginVal.textContent = `KES ${netMarginAmount.toFixed(2)} (${netMarginPercent}%)`;
+
+            if (netMarginPercent < 0) {
+                marginVal.className = "text-rose-600 font-black block mt-0.5 animate-pulse";
+                marginBox.className = "bg-rose-50 p-2.5 rounded-lg border border-rose-200";
+                marginTitle.textContent = "Deficit Loss!";
+                marginTitle.className = "text-[9px] text-rose-500 block uppercase font-bold";
+            } else {
+                marginVal.className = "text-emerald-600 font-bold block mt-0.5";
+                marginBox.className = "bg-white/80 p-2.5 rounded-lg border border-blue-100/50";
+                marginTitle.textContent = "Net Margin";
+                marginTitle.className = "text-[9px] text-slate-400 block uppercase font-bold";
+            }
+        }
 
         async function saveSystemSettings(event) {
             event.preventDefault();
