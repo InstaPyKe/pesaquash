@@ -34,32 +34,43 @@
                 return;
             }
 
-            // 2. Global administration overrides check
-            if (localStorage.getItem("maintenance_mode") === "true") {
-                document.body.innerHTML = `
-                    <div class="min-h-screen bg-[#F8FAFC] flex flex-col justify-center items-center px-4 font-sans selection:bg-rose-500/10 selection:text-rose-900">
-                        <div class="max-w-md w-full glass-card bg-blue-50/50 border border-blue-200/60 p-8 rounded-2xl shadow-xl text-center space-y-5">
-                            <div class="h-12 w-12 bg-blue-50 border border-blue-200/60 text-blue-600 rounded-full flex items-center justify-center mx-auto text-xl animate-bounce">⚙️</div>
-                            <h2 class="text-xl font-black text-slate-900 uppercase font-mono tracking-wider">System Under Maintenance</h2>
-                            <p class="text-xs text-slate-500 font-semibold leading-relaxed">
-                                PESAQUASH is currently undergoing scheduled upgrades. Access to the member workspace is temporarily suspended.
-                            </p>
-                            <div class="pt-2">
-                                <a href="../public/signin.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-xs">
-                                    Return to Log In
-                                </a>
+            // 2. Live administration settings overrides check
+            try {
+                const settingsResponse = await fetch('/api/admin/settings');
+                const settingsData = await settingsResponse.json();
+                if (settingsData.success && settingsData.settings) {
+                    const s = settingsData.settings;
+                    
+                    if (s.maintenance_mode === "true") {
+                        if (s.force_logout === "true") {
+                            localStorage.removeItem("logged_in_user");
+                            alert("The system is undergoing maintenance and your session has been closed.");
+                            window.location.href = "../public/signin.html";
+                            return;
+                        }
+                        
+                        document.body.innerHTML = `
+                            <div class="min-h-screen bg-[#F8FAFC] flex flex-col justify-center items-center px-4 font-sans selection:bg-rose-500/10 selection:text-rose-900">
+                                <div class="max-w-md w-full glass-card bg-blue-50/50 border border-blue-200/60 p-8 rounded-2xl shadow-xl text-center space-y-5">
+                                    <div class="h-12 w-12 bg-blue-50 border border-blue-200/60 text-blue-600 rounded-full flex items-center justify-center mx-auto text-xl animate-bounce">⚙️</div>
+                                    <h2 class="text-xl font-black text-slate-900 uppercase font-mono tracking-wider">System Under Maintenance</h2>
+                                    <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                        PESAQUASH is currently undergoing scheduled upgrades. Access to the member workspace is temporarily suspended.
+                                    </p>
+                                    <div class="pt-2">
+                                        <a href="../public/signin.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-xs">
+                                            Return to Log In
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                `;
-                document.body.className = "bg-[#F8FAFC] min-h-screen flex flex-col justify-center items-center";
-                return;
-            } else if (localStorage.getItem("force_logout") === "true") {
-                localStorage.removeItem("logged_in_user");
-                localStorage.removeItem("force_logout");
-                alert("The administrator has closed the session. You have been logged out.");
-                window.location.href = "../public/signin.html";
-                return;
+                        `;
+                        document.body.className = "bg-[#F8FAFC] min-h-screen flex flex-col justify-center items-center";
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to verify maintenance mode:", err);
             }
 
             // 3. Fetch user dashboard stats from live server

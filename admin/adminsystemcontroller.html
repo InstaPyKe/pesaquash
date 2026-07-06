@@ -95,10 +95,13 @@
                         <span class="text-xs font-bold text-slate-900 block">Global Maintenance Mode</span>
                         <span class="text-[10px] text-slate-400 block mt-0.5 font-semibold">Toggling this ON makes all user dashboard and task pages inaccessible.</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="maintenance-toggle" class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-650"></div>
-                    </label>
+                    <div class="flex items-center">
+                        <span id="maintenance-status" class="text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-slate-400">OFF</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="maintenance-toggle" onchange="updateToggleUI()" class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Toggle 2: Force Terminate All User Sessions -->
@@ -107,10 +110,13 @@
                         <span class="text-xs font-bold text-slate-900 block">Force Session Termination</span>
                         <span class="text-[10px] text-slate-400 block mt-0.5 font-semibold">Immediately log out all logged-in users when maintenance mode is active.</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="force-logout-toggle" class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-650"></div>
-                    </label>
+                    <div class="flex items-center">
+                        <span id="force-logout-status" class="text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-slate-400">OFF</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="force-logout-toggle" onchange="updateToggleUI()" class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-650"></div>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Toggle 3: Block User Registration -->
@@ -119,10 +125,13 @@
                         <span class="text-xs font-bold text-slate-900 block">Block New Member Registrations</span>
                         <span class="text-[10px] text-slate-400 block mt-0.5 font-semibold">Toggling this ON blocks signups, displaying a "Registration Closed" warning.</span>
                     </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="registration-block-toggle" class="sr-only peer">
-                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-650"></div>
-                    </label>
+                    <div class="flex items-center">
+                        <span id="registration-block-status" class="text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-emerald-600">OPEN</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="registration-block-toggle" onchange="updateToggleUI()" class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+                        </label>
+                    </div>
                 </div>
             </div>
 
@@ -235,11 +244,44 @@
                     document.getElementById("daily-task-limit").value = s.daily_task_limit || "8";
                     
                     updateCommissionPreview();
+                    updateToggleUI();
                 }
             } catch (error) {
                 console.error("Failed to load settings:", error);
             }
         });
+
+        function updateToggleUI() {
+            const maintenanceToggle = document.getElementById("maintenance-toggle");
+            const maintenanceStatus = document.getElementById("maintenance-status");
+            if (maintenanceToggle.checked) {
+                maintenanceStatus.textContent = "ACTIVE & LOCKED";
+                maintenanceStatus.className = "text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-rose-600 animate-pulse";
+            } else {
+                maintenanceStatus.textContent = "OFF";
+                maintenanceStatus.className = "text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-slate-400";
+            }
+
+            const forceLogoutToggle = document.getElementById("force-logout-toggle");
+            const forceLogoutStatus = document.getElementById("force-logout-status");
+            if (forceLogoutToggle.checked) {
+                forceLogoutStatus.textContent = "TERMINATE";
+                forceLogoutStatus.className = "text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-red-650 font-bold";
+            } else {
+                forceLogoutStatus.textContent = "OFF";
+                forceLogoutStatus.className = "text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-slate-400";
+            }
+
+            const regBlockToggle = document.getElementById("registration-block-toggle");
+            const regBlockStatus = document.getElementById("registration-block-status");
+            if (regBlockToggle.checked) {
+                regBlockStatus.textContent = "LOCKED / CLOSED";
+                regBlockStatus.className = "text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-amber-600 font-bold";
+            } else {
+                regBlockStatus.textContent = "OPEN";
+                regBlockStatus.className = "text-[9px] font-mono font-bold uppercase tracking-wider mr-2 text-emerald-600 font-bold";
+            }
+        }
 
         function updateCommissionPreview() {
             const l1 = parseFloat(document.getElementById("commission-l1").value) || 0;

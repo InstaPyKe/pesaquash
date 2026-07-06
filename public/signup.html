@@ -200,32 +200,38 @@
 
     <!-- Script Layer for Autofilling Reference IDs -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", async function () {
             // Check if registration is blocked by admin
-            if (localStorage.getItem("registration_blocked") === "true") {
-                const cardContainer = document.querySelector(".glass-card");
-                if (cardContainer) {
-                    cardContainer.innerHTML = `
-                        <div class="text-center py-6 space-y-4">
-                            <div class="h-12 w-12 bg-rose-50 border border-rose-200 text-rose-600 rounded-full flex items-center justify-center mx-auto text-xl animate-bounce">⚠️</div>
-                            <h3 class="text-base font-black text-slate-900 uppercase font-mono tracking-wider">Registration Closed</h3>
-                            <p class="text-xs text-slate-500 font-semibold leading-relaxed">
-                                PESAQUASH is currently not accepting new member registrations due to system optimizations. Please contact the upline or try again later.
-                            </p>
-                            <div class="pt-4">
-                                <a href="index.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-xs">
-                                    Return to Home
-                                </a>
+            try {
+                const response = await fetch('/api/admin/settings');
+                const data = await response.json();
+                if (data.success && data.settings && data.settings.registration_blocked === "true") {
+                    const cardContainer = document.querySelector(".glass-card");
+                    if (cardContainer) {
+                        cardContainer.innerHTML = `
+                            <div class="text-center py-6 space-y-4">
+                                <div class="h-12 w-12 bg-rose-50 border border-rose-200 text-rose-600 rounded-full flex items-center justify-center mx-auto text-xl animate-bounce">⚠️</div>
+                                <h3 class="text-base font-black text-slate-900 uppercase font-mono tracking-wider">Registration Closed</h3>
+                                <p class="text-xs text-slate-500 font-semibold leading-relaxed">
+                                    PESAQUASH is currently not accepting new member registrations due to system optimizations. Please contact the upline or try again later.
+                                </p>
+                                <div class="pt-4">
+                                    <a href="index.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-xs">
+                                        Return to Home
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    `;
-                    // Also change the subtitle text
-                    const subtitle = document.querySelector(".sm\\:mx-auto .text-center p");
-                    if (subtitle) {
-                        subtitle.innerHTML = "<span class='text-rose-600 font-bold'>System Registration Gate Locked</span>";
+                        `;
+                        // Also change the subtitle text
+                        const subtitle = document.querySelector(".sm\\:mx-auto .text-center p");
+                        if (subtitle) {
+                            subtitle.innerHTML = "<span class='text-rose-600 font-bold'>System Registration Gate Locked</span>";
+                        }
                     }
+                    return;
                 }
-                return;
+            } catch (err) {
+                console.error("Signup configuration check failed:", err);
             }
 
             const urlParams = new URLSearchParams(window.location.search);
