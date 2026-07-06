@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/css/reco-theme.css">
+    <!-- Currency Conversion Manager -->
+    <script src="../public/js/currency-manager.js"></script>
     <!-- Custom Alerts Library -->
     <script src="../public/js/system-alerts.js"></script>
     <script>
@@ -70,8 +72,11 @@
                     document.getElementById("welcome-title").textContent = `Welcome back, ${sentenceCaseName}`;
                     document.getElementById("account-id").textContent = `Account id: pesa-100${currentUser.id}-ke`;
                     
-                    document.getElementById("wallet-balance").textContent = data.walletBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                    document.getElementById("total-earnings").textContent = data.totalEarnings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    const walletEl = document.getElementById("wallet-balance");
+                    walletEl.setAttribute("data-currency-kes", data.walletBalance);
+                    
+                    const totalEl = document.getElementById("total-earnings");
+                    totalEl.setAttribute("data-currency-kes", data.totalEarnings);
                     
                     const completedTasks = data.completedToday;
                     document.getElementById("daily-progress-text").textContent = `${completedTasks} / 8`;
@@ -125,8 +130,9 @@
 
                             const amountVal = parseFloat(act.amount);
                             const isPositive = amountVal >= 0;
-                            const amountText = (isPositive ? "+" : "") + "KES " + Math.abs(amountVal).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                             const amountClass = isPositive ? "text-emerald-600" : "text-rose-650";
+                            const prefixSymbol = isPositive ? "+" : "-";
+                            const amountText = `${prefixSymbol}<span data-currency-kes="${Math.abs(amountVal)}"></span>`;
 
                             let statusBadge = `
                                 <span class="inline-block text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-lg text-[10px] font-mono font-bold border border-emerald-100/60">${act.status}</span>
@@ -159,6 +165,9 @@
                             activityLogBody.appendChild(row);
                         });
                     }
+                    if (typeof updateAllCurrencyDisplays === "function") {
+                        updateAllCurrencyDisplays();
+                    }
                 }
             } catch (error) {
                 console.error("Dashboard data load error:", error);
@@ -169,8 +178,6 @@
 
 <body class="antialiased font-semibold">
 
-    <!-- Top Sticky Header -->
-    <!-- Top Sticky Header -->
     <header class="sticky top-0 bg-white border-b border-slate-200/80 shadow-xs z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -178,6 +185,11 @@
             </div>
 
             <div class="flex items-center space-x-3">
+                <!-- Currency Toggle Selector -->
+                <div class="flex items-center bg-slate-100 rounded-xl p-0.5 border border-blue-100 shrink-0">
+                    <button onclick="setGlobalCurrency('KES')" id="currency-toggle-kes" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer">KES</button>
+                    <button onclick="setGlobalCurrency('USD')" id="currency-toggle-usd" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer">USD</button>
+                </div>
                 <!-- Notification Bell -->
                 <button onclick="alert('No new notifications')" class="relative p-2 text-slate-500 hover:text-blue-600 transition bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 shadow-xs focus:outline-none cursor-pointer">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -231,8 +243,7 @@
                     <span class="text-blue-600 font-bold">Wallet</span>
                 </div>
                 <div class="mt-4 flex items-baseline space-x-1">
-                    <span class="text-xs font-bold text-slate-500">KES</span>
-                    <span id="wallet-balance" class="text-3xl font-black tracking-tight text-slate-900">0.00</span>
+                    <span id="wallet-balance" class="text-3xl font-black tracking-tight text-slate-900" data-currency-kes="0.00">KES 0.00</span>
                 </div>
                 <p class="mt-2 text-[10px] text-slate-500 font-mono">Ready to withdraw to M-Pesa instantly.</p>
             </div>
@@ -245,8 +256,7 @@
                     <span class="text-amber-600 font-bold">Lifetime</span>
                 </div>
                 <div class="mt-4 flex items-baseline space-x-1">
-                    <span class="text-xs font-bold text-slate-500">KES</span>
-                    <span id="total-earnings" class="text-3xl font-black tracking-tight text-slate-900">0.00</span>
+                    <span id="total-earnings" class="text-3xl font-black tracking-tight text-slate-900" data-currency-kes="0.00">KES 0.00</span>
                 </div>
                 <p class="mt-2 text-[10px] text-slate-500 font-mono">Includes tasks and invite commissions.</p>
             </div>

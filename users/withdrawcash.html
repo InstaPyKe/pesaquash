@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/css/reco-theme.css">
+    <!-- Currency Conversion Manager -->
+    <script src="../public/js/currency-manager.js"></script>
     <!-- Custom Alerts Library -->
     <script src="../public/js/system-alerts.js"></script>
     <script>
@@ -54,6 +56,11 @@
             </div>
 
             <div class="flex items-center space-x-3">
+                <!-- Currency Toggle Selector -->
+                <div class="flex items-center bg-slate-100 rounded-xl p-0.5 border border-blue-100 shrink-0">
+                    <button onclick="setGlobalCurrency('KES')" id="currency-toggle-kes" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer">KES</button>
+                    <button onclick="setGlobalCurrency('USD')" id="currency-toggle-usd" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer">USD</button>
+                </div>
                 <!-- Notification Bell -->
                 <button onclick="alert('No new notifications')" class="relative p-2 text-slate-500 hover:text-blue-600 transition bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 shadow-xs focus:outline-none cursor-pointer">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -86,11 +93,11 @@
             <!-- Static Metrics Ledger Context -->
             <div class="grid grid-cols-2 gap-4 bg-slate-100 p-4 rounded-xl border border-slate-200">
                 <div>
-                    <span class="text-sm font-bold text-slate-500 block">Available Balance</span>
+                    <span id="available-balance-label" class="text-sm font-bold text-slate-500 block">Available Balance (KES)</span>
                     <span id="available-balance" class="text-2xl font-extrabold text-slate-900 block mt-1">KES ...</span>
                 </div>
                 <div>
-                    <span class="text-sm font-bold text-slate-500 block">Min Withdrawal</span>
+                    <span id="min-withdrawal-label" class="text-sm font-bold text-slate-500 block">Min Withdrawal (KES)</span>
                     <span id="min-withdrawal" class="text-2xl font-extrabold text-blue-600 block mt-1">KES ...</span>
                 </div>
             </div>
@@ -168,13 +175,25 @@
                     const balance = parseFloat(data.walletBalance);
                     const minLimit = settingsData.settings.min_withdrawal ? parseFloat(settingsData.settings.min_withdrawal) : 50.00;
 
-                    document.getElementById("available-balance").innerText = `KES ${balance.toFixed(2)}`;
-                    document.getElementById("min-withdrawal").innerText = `KES ${minLimit.toFixed(2)}`;
+                    const availBalanceEl = document.getElementById("available-balance");
+                    availBalanceEl.setAttribute("data-currency-kes", balance);
+                    
+                    const minWithdrawalEl = document.getElementById("min-withdrawal");
+                    minWithdrawalEl.setAttribute("data-currency-kes", minLimit);
 
                     const amountInput = document.getElementById("withdraw-amount");
-                    amountInput.min = minLimit;
-                    amountInput.max = balance;
-                    amountInput.placeholder = minLimit.toFixed(2);
+                    amountInput.setAttribute("data-min-kes", minLimit);
+                    amountInput.setAttribute("data-max-kes", balance);
+
+                    if (typeof updateAllCurrencyDisplays === "function") {
+                        updateAllCurrencyDisplays();
+                    } else {
+                        availBalanceEl.innerText = `KES ${balance.toFixed(2)}`;
+                        minWithdrawalEl.innerText = `KES ${minLimit.toFixed(2)}`;
+                        amountInput.min = minLimit;
+                        amountInput.max = balance;
+                        amountInput.placeholder = minLimit.toFixed(2);
+                    }
                 }
             } catch (error) {
                 console.error("Failed to load withdrawal limits:", error);
@@ -185,8 +204,13 @@
             event.preventDefault();
             if (!currentUser) return;
 
-            const amount = document.getElementById("withdraw-amount").value;
+            let amount = parseFloat(document.getElementById("withdraw-amount").value);
             const phone = document.getElementById("withdraw-phone").value;
+            
+            // Convert to KES if USD is selected
+            if (typeof getSelectedCurrency === "function" && getSelectedCurrency() === "USD") {
+                amount = amount * KES_USD_RATE;
+            }
 
             try {
                 const response = await fetch('/api/users/withdraw', {
