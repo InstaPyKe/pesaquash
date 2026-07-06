@@ -196,6 +196,10 @@
                 return;
             }
             currentUser = JSON.parse(loggedInUserStr);
+            if (!currentUser.isActive) {
+                window.location.href = "../public/activationfee.html";
+                return;
+            }
             drawWheelGraphic();
         });
 

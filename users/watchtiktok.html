@@ -244,6 +244,10 @@
                 return;
             }
             currentUser = JSON.parse(loggedInUserStr);
+            if (!currentUser.isActive) {
+                window.location.href = "../public/activationfee.html";
+                return;
+            }
 
             try {
                 const response = await fetch(`/api/users/tasks?userId=${currentUser.id}&type=tiktok`);

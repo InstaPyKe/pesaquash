@@ -282,12 +282,8 @@
                 const data = await response.json();
 
                 if (response.status === 201) {
-                    // Store details in localStorage to pass context to activation screen
-                    localStorage.setItem('pending_activation_username', username.toLowerCase());
-                    localStorage.setItem('pending_activation_phone', phone);
-                    
-                    alert("Account registered successfully! Please finalize activation by paying the activation fee.");
-                    window.location.href = "activationfee.html";
+                    alert("Account registered successfully! Please sign in to activate and access your account.");
+                    window.location.href = "signin.html";
                 } else {
                     // Show error details in custom alert modal
                     alert(data.message || data.error || "Registration failed. Please check inputs.");

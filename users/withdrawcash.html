@@ -158,6 +158,10 @@
                 return;
             }
             currentUser = JSON.parse(loggedInUserStr);
+            if (!currentUser.isActive) {
+                window.location.href = "../public/activationfee.html";
+                return;
+            }
 
             // Pre-fill phone input
             document.getElementById("withdraw-phone").value = currentUser.phone;
