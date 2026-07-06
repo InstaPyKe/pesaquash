@@ -176,6 +176,7 @@
             }
 
             await loadTasksList();
+            toggleFormFields();
         });
 
         async function loadTasksList() {
@@ -229,16 +230,25 @@
             const taskType = document.getElementById("task-type").value;
             const titleLabel = document.getElementById("title-label");
             const urlField = document.getElementById("url-field");
+            const taskUrlInput = document.getElementById("task-url");
             const quizOptions = document.getElementById("quiz-options");
 
             if (taskType === "trivia") {
                 titleLabel.innerText = "Trivia Question";
                 urlField.classList.add("hidden");
                 quizOptions.classList.remove("hidden");
+                taskUrlInput.removeAttribute("required");
             } else {
                 titleLabel.innerText = taskType === "tiktok" ? "TikTok Video Title" : "YouTube Video Title";
                 urlField.classList.remove("hidden");
                 quizOptions.classList.add("hidden");
+                taskUrlInput.setAttribute("required", "true");
+                
+                if (taskType === "tiktok") {
+                    taskUrlInput.placeholder = "https://www.tiktok.com/@username/video/123456789";
+                } else {
+                    taskUrlInput.placeholder = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+                }
             }
         }
 
@@ -261,6 +271,27 @@
                 options = JSON.stringify([correct, wrong]);
             } else {
                 url_or_question = document.getElementById("task-url").value;
+                
+                if (!url_or_question || !url_or_question.trim()) {
+                    alert("Please provide a valid URL for the video task.");
+                    return;
+                }
+                
+                if (type === "youtube") {
+                    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                    const match = url_or_question.match(regExp);
+                    if (!match || !match[2] || match[2].trim().length !== 11) {
+                        const confirmYouTube = confirm("⚠️ Warning: The YouTube URL entered does not seem to contain a valid 11-digit video ID.\n\nDo you want to save it anyway?");
+                        if (!confirmYouTube) return;
+                    }
+                } else if (type === "tiktok") {
+                    const isShortUrl = url_or_question.includes("vt.tiktok.com") || url_or_question.includes("vm.tiktok.com") || url_or_question.includes("v.tiktok.com");
+                    const isFullUrl = url_or_question.includes("/video/");
+                    if (!isShortUrl && !isFullUrl) {
+                        const confirmTikTok = confirm("⚠️ Warning: The TikTok URL entered does not match standard patterns (e.g. vt.tiktok.com or tiktok.com/@user/video/ID).\n\nDo you want to save it anyway?");
+                        if (!confirmTikTok) return;
+                    }
+                }
             }
 
             try {
