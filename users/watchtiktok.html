@@ -93,7 +93,7 @@
             class="glass-card bg-purple-50/50 rounded-2xl shadow-xl shadow-slate-100/40 p-4 border border-purple-200/60 overflow-hidden">
 
             <!-- Simulated Mobile Frame -->
-            <div
+            <div id="video-player-container"
                 class="w-full aspect-[9/16] max-h-[480px] bg-slate-950 rounded-xl relative overflow-hidden flex items-center justify-center border border-slate-900 group shadow-inner">
 
                 <!-- Mock Placeholder representing an embedded TikTok -->
@@ -145,6 +145,32 @@
         let currentTaskId = null;
         let currentUser = null;
 
+        function getVideoEmbedHtml(url, type) {
+            if (!url) return '';
+            if (type === 'youtube') {
+                let videoId = '';
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = url.match(regExp);
+                if (match && match[2].length === 11) {
+                    videoId = match[2];
+                }
+                if (videoId) {
+                    return `<iframe class="absolute inset-0 w-full h-full rounded-xl" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                }
+            } else if (type === 'tiktok') {
+                let tiktokId = '';
+                const tiktokRegExp = /\/video\/(\d+)/;
+                const match = url.match(tiktokRegExp);
+                if (match && match[1]) {
+                    tiktokId = match[1];
+                }
+                if (tiktokId) {
+                    return `<iframe class="absolute inset-0 w-full h-full rounded-xl" src="https://www.tiktok.com/embed/v2/${tiktokId}" frameborder="0" allowfullscreen></iframe>`;
+                }
+            }
+            return `<iframe class="absolute inset-0 w-full h-full rounded-xl" src="${url}" frameborder="0" allowfullscreen></iframe>`;
+        }
+
         document.addEventListener("DOMContentLoaded", async () => {
             const loggedInUserStr = localStorage.getItem("logged_in_user");
             if (!loggedInUserStr) {
@@ -163,6 +189,12 @@
                     // Update UI with task info
                     document.querySelector("h1").innerText = task.title;
                     document.getElementById("claim-btn").innerText = `Claim KES ${parseFloat(task.reward).toFixed(2)} Reward (Locked)`;
+                    
+                    // Embed TikTok video player
+                    const playerContainer = document.getElementById("video-player-container");
+                    if (playerContainer) {
+                        playerContainer.innerHTML = getVideoEmbedHtml(task.url_or_question, 'tiktok');
+                    }
                     
                     startTimer(task.reward);
                 } else {
